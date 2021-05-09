@@ -6,4 +6,8 @@ module.exports = {
 	database: process.env.DB_DATABASE || 'sip-e2',
 	host: process.env.DB_HOST || 'localhost',
 	dialect: process.env.DB_DIALECT || 'mysql',
+	define: {
+		// genera claves foraneas del tipo user_id
+		undescored: true,
+	},
 };

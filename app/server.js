@@ -10,9 +10,7 @@ app.use(express.urlencoded({ extended: false }));
 const PORT = process.env.PORT || 4000;
 
 // rutas
-app.use('/', (req, res) => {
-	res.json({ hola: 'Mundo' });
-});
+app.use(require('./routes'));
 
 // arrancar el servidor
 app.listen(PORT, () => {
