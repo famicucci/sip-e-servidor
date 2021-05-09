@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const { connection } = require('./database/db');
 
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
@@ -15,5 +16,9 @@ app.use('/', (req, res) => {
 
 // arrancar el servidor
 app.listen(PORT, () => {
-	console.log(`El servidor esta funcionando en el puerto ${PORT}`);
+	console.log(`La aplicación ha arrancado en el puerto: ${PORT}`);
+
+	connection.sync({ force: true }).then(() => {
+		console.log('Se ha establecido la conexión');
+	});
 });
