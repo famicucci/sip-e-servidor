@@ -10,6 +10,7 @@ db.connection = new Sequelize(
 );
 
 // vinculo a modelos
-db.Empresa = require('../models/empresa')(db.connection, DataTypes);
+db.Empresa = require('../models/Empresa')(db.connection, DataTypes);
+db.Producto = require('../models/Producto')(db.connection, DataTypes);
 
 module.exports = db;
