@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Producto.init(
 		{
-			codigo: { type: DataTypes.STRING(15), allowNull: false },
+			codigo: { type: DataTypes.STRING(15), allowNull: false, unique: true },
 			descripcion: { type: DataTypes.STRING(120), allowNull: false },
 		},
 		{

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Empresa.init(
 		{
-			nombre: { type: DataTypes.STRING(30), allowNull: false },
+			nombre: { type: DataTypes.STRING(30), allowNull: false, unique: true },
 		},
 		{
 			sequelize,
