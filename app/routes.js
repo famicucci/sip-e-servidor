@@ -6,7 +6,7 @@ const router = express.Router();
 const ProductoController = require('./controllers/ProductoController');
 
 // home
-router.get('/', (req, res) => {
+router.get('/api', (req, res) => {
 	res.json({ foo: 'bar ' });
 });
 
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 // router.get('/empresas', EmpresaController.traerEmpresas);
 
 // productos
-router.get('/productos', ProductoController.traerProductos);
-router.post('/productos', ProductoController.crearProducto);
+router.get('/api/productos', ProductoController.traerProductos);
+router.post('/api/productos', ProductoController.crearProducto);
 
 module.exports = router;

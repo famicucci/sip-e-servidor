@@ -6,6 +6,9 @@ exports.traerProductos = async (req, res) => {
 };
 
 exports.crearProducto = async (req, res) => {
-	const producto = await Producto.create(req.body);
+	const producto = await Producto.create({
+		codigo: req.body.codigo,
+		descripcion: req.body.descripcion,
+	});
 	res.json(producto);
 };
