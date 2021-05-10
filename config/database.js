@@ -8,6 +8,6 @@ module.exports = {
 	dialect: process.env.DB_DIALECT || 'mysql',
 	define: {
 		// genera claves foraneas del tipo user_id
-		undescored: true,
+		underscored: true,
 	},
 };

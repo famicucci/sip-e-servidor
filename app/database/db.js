@@ -13,4 +13,7 @@ db.connection = new Sequelize(
 db.Empresa = require('../models/Empresa')(db.connection, DataTypes);
 db.Producto = require('../models/Producto')(db.connection, DataTypes);
 
+// asociar los modelos
+db.Empresa.associate(db);
+
 module.exports = db;
