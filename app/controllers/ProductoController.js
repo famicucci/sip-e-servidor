@@ -1,8 +1,11 @@
-const { Producto } = require('../database/db');
+const { Producto, Empresa } = require('../database/db');
 
 exports.traerProductos = async (req, res) => {
 	try {
-		const productos = await Producto.findAll();
+		const productos = await Producto.findAll({
+			include: { model: Empresa, attributes: ['nombre'] },
+			attributes: ['codigo', 'descripcion'],
+		});
 		res.json(productos);
 	} catch (error) {
 		res.json(error);
