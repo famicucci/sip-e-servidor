@@ -3,6 +3,7 @@ const router = express.Router();
 
 // importar controladores
 const EmpresaController = require('./controllers/EmpresaController');
+const UsuarioController = require('./controllers/UsuarioController');
 const ProductoController = require('./controllers/ProductoController');
 
 // home
@@ -12,6 +13,9 @@ router.get('/api', (req, res) => {
 
 // empresas
 router.post('/api/empresas', EmpresaController.crearEmpresa);
+
+// usuarios
+router.post('/api/usuarios', UsuarioController.crearUsuario);
 
 // productos
 router.get('/api/productos', ProductoController.traerProductos);
