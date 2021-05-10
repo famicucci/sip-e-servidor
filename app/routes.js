@@ -15,5 +15,6 @@ router.get('/', (req, res) => {
 
 // productos
 router.get('/productos', ProductoController.traerProductos);
+router.post('/productos', ProductoController.crearProducto);
 
 module.exports = router;
