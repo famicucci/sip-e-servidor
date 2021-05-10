@@ -11,7 +11,7 @@ router.get('/api', (req, res) => {
 });
 
 // empresas
-router.get('/api/empresas', EmpresaController.traerEmpresas);
+router.post('/api/empresas', EmpresaController.crearEmpresa);
 
 // productos
 router.get('/api/productos', ProductoController.traerProductos);
