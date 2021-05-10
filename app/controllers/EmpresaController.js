@@ -1,6 +1,10 @@
-const { Empresa } = require('../models/Empresa');
+const { Empresa } = require('../database/db');
 
-// exports.traerEmpresas = async (req, res) => {
-// 	const empresas = await Empresa.findAll();
-// 	res.json(empresas);
-// };
+exports.traerEmpresas = async (req, res) => {
+	try {
+		const empresas = await Empresa.create({ nombre: req.body.nombre });
+		res.json(empresas);
+	} catch (error) {
+		res.json(error);
+	}
+};
