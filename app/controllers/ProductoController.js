@@ -1,4 +1,4 @@
-const { Producto, Empresa } = require('../database/db');
+const { Producto, Empresa } = require('../models/index');
 
 exports.traerProductos = async (req, res) => {
 	try {
