@@ -14,9 +14,11 @@ exports.crearProducto = async (req, res) => {
 		const producto = await Producto.create({
 			codigo: req.body.codigo,
 			descripcion: req.body.descripcion,
+			EmpresaId: req.body.EmpresaId,
 		});
 		res.json(producto);
 	} catch (error) {
+		console.log(req.body);
 		res.json(error);
 	}
 };

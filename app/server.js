@@ -16,7 +16,7 @@ app.use(require('./routes'));
 app.listen(PORT, () => {
 	console.log(`La aplicación ha arrancado en el puerto: ${PORT}`);
 
-	connection.sync({ force: false }).then(() => {
+	connection.sync({ force: true }).then(() => {
 		console.log('Se ha establecido la conexión');
 	});
 });
