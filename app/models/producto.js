@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 	class Producto extends Model {
 		static associate(models) {
 			Producto.belongsTo(models.Empresa);
+			Producto.hasMany(models.Stock, { foreignKey: { allowNull: false } });
 		}
 	}
 	Producto.init(

@@ -4,11 +4,12 @@ module.exports = (sequelize, DataTypes) => {
 	class Stock extends Model {
 		static associate(models) {
 			Stock.belongsTo(models.PtoStock);
+			Stock.belongsTo(models.Producto);
 		}
 	}
 	Stock.init(
 		{
-			codigoProd: DataTypes.STRING,
+			ProductoCodigo: DataTypes.STRING(15),
 			cantidad: DataTypes.INTEGER,
 			PtoStockId: DataTypes.INTEGER,
 		},
