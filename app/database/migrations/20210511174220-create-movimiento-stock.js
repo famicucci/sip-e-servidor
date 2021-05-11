@@ -12,6 +12,8 @@ module.exports = {
 				type: Sequelize.STRING(15),
 				allowNull: false,
 				references: { model: 'productos', key: 'codigo' },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
 			},
 			cantidad: {
 				type: Sequelize.INTEGER,
