@@ -1,28 +1,33 @@
 'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('ptostocks', {
+		await queryInterface.createTable('stocks', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			descripcion: {
-				type: Sequelize.STRING(30),
+			ProductoCodigo: {
+				type: Sequelize.STRING(15),
 				allowNull: false,
+				references: { model: 'productos', key: 'codigo' },
 			},
-			stockMin: {
+			cantidad: {
 				type: Sequelize.INTEGER,
 			},
-			EmpresaId: {
+			PtoStockId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
-				references: { model: 'empresas', key: 'id' },
+				references: { model: 'ptostocks', key: 'id' },
+			},
+			updatedAt: {
+				allowNull: false,
+				type: Sequelize.DATE,
 			},
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('ptostocks');
+		await queryInterface.dropTable('stocks');
 	},
 };
