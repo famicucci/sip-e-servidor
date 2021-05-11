@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Empresa.hasMany(models.Producto, { foreignKey: { allowNull: false } });
 			Empresa.hasMany(models.Usuario, { foreignKey: { allowNull: false } });
+			Empresa.hasMany(models.PtoStock, { foreignKey: { allowNull: false } });
 		}
 	}
 	Empresa.init(

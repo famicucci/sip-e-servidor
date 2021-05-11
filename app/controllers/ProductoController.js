@@ -24,3 +24,7 @@ exports.crearProducto = async (req, res) => {
 		res.json(error);
 	}
 };
+
+// modificar
+
+// eliminar
