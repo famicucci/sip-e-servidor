@@ -26,6 +26,6 @@ module.exports = {
 
 	// se ejecuta cuando se deshace la siembra
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('Producto', null, {});
+		await queryInterface.bulkDelete('productos', null, {});
 	},
 };
