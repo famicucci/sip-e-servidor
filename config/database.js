@@ -7,6 +7,10 @@ module.exports = {
 	host: process.env.DB_HOST || 'localhost',
 	dialect: process.env.DB_DIALECT || 'mysql',
 
+	// configurar seeds
+	seederStorage: 'json',
+	seederStoragePath: 'sequelizeSeed.json',
+
 	// Configurar migraciones
 	migrationStorage: 'sequelize',
 	migrationStorageName: 'migrations',
