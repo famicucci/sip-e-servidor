@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 			Producto.hasMany(models.MovimientoStock, {
 				foreignKey: { allowNull: false },
 			});
+			Producto.hasMany(models.Precio, { foreignKey: { allowNull: false } });
 		}
 	}
 	Producto.init(
