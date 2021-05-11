@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
 	class PtoStock extends Model {
 		static associate(models) {
 			PtoStock.belongsTo(models.Empresa);
-			PtoStock.hasMany(models.PtoStock, { foreignKey: { allowNull: false } });
+			PtoStock.hasMany(models.Stock, { foreignKey: { allowNull: false } });
+			PtoStock.hasMany(models.MovimientoStock, {
+				foreignKey: { allowNull: false },
+			});
 		}
 	}
 	PtoStock.init(

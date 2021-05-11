@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 	class Usuario extends Model {
 		static associate(models) {
 			Usuario.belongsTo(models.Empresa);
+			Usuario.hasMany(models.MovimientoStock);
 		}
 	}
 	Usuario.init(
