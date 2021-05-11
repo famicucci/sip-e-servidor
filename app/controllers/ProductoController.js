@@ -25,6 +25,31 @@ exports.crearProducto = async (req, res) => {
 	}
 };
 
-// modificar
+exports.modificarProducto = async (req, res) => {
+	try {
+		const producto = await Producto.update(
+			{
+				codigo: req.body.codigo,
+				descripcion: req.body.descripcion,
+			},
+			{
+				where: { codigo: req.params.ProductoCodigo },
+			}
+		);
+		res.json({ success: 'El producto ha sido modificado' });
+	} catch (error) {
+		res.json(error);
+	}
+};
 
 // eliminar
+exports.eliminarProducto = async (req, res) => {
+	try {
+		const producto = await Producto.destroy({
+			where: { codigo: req.params.ProductoCodigo },
+		});
+		res.json({ success: 'El producto ha sido eliminado' });
+	} catch (error) {
+		res.json(error);
+	}
+};

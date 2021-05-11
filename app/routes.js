@@ -20,5 +20,13 @@ router.post('/api/usuarios', UsuarioController.crearUsuario);
 // productos
 router.get('/api/productos', ProductoController.traerProductos);
 router.post('/api/productos', ProductoController.crearProducto);
+router.put(
+	'/api/productos/:ProductoCodigo',
+	ProductoController.modificarProducto
+);
+router.delete(
+	'/api/productos/:ProductoCodigo',
+	ProductoController.eliminarProducto
+);
 
 module.exports = router;
