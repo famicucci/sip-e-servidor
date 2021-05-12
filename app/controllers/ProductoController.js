@@ -1,6 +1,8 @@
 const { Producto, Empresa } = require('../models/index');
 
 exports.traerProductos = async (req, res) => {
+	console.log(req.usuarioId);
+	console.log(req.usuarioRol);
 	try {
 		const productos = await Producto.findAll({
 			attributes: ['codigo', 'descripcion'],

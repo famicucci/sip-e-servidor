@@ -64,6 +64,7 @@ exports.modificarUsuario = async (req, res) => {
 const createToken = (usuario) => {
 	const payload = {
 		usuarioId: usuario.id,
+		usuarioRol: usuario.rol,
 		createAt: moment().unix(),
 		expiredAt: moment().add(60, 'minutes').unix(),
 	};
