@@ -1,15 +1,17 @@
 const { Usuario } = require('../models/index');
+const bcryptjs = require('bcryptjs');
 
-exports.crearUsuario = async (req, res) => {
+exports.registroUsuario = async (req, res) => {
 	try {
+		req.body.password = bcryptjs.hashSync(req.body.password, 10);
 		const usuarios = await Usuario.create({
 			nombre: req.body.nombre,
-			clave: req.body.clave,
+			password: req.body.password,
 			usuario: req.body.usuario,
 			rol: req.body.rol,
 			EmpresaId: req.body.EmpresaId,
 		});
-		res.json(usuarios);
+		res.json({ success: 'Usuario creado' });
 	} catch (error) {
 		res.json(error);
 	}
@@ -21,7 +23,7 @@ exports.modificarUsuario = async (req, res) => {
 	try {
 		const usuarios = await Usuario.create({
 			nombre: req.body.nombre,
-			clave: req.body.clave,
+			password: req.body.password,
 			usuario: req.body.usuario,
 			rol: req.body.rol,
 			EmpresaId: req.body.EmpresaId,
@@ -31,5 +33,7 @@ exports.modificarUsuario = async (req, res) => {
 		res.json(error);
 	}
 };
+
+// registro
 
 // eliminar

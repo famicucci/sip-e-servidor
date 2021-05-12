@@ -15,7 +15,8 @@ router.get('/api', (req, res) => {
 router.post('/api/empresas', EmpresaController.crearEmpresa);
 
 // usuarios
-router.post('/api/usuarios', UsuarioController.crearUsuario);
+router.post('/api/usuarios/registro', UsuarioController.registroUsuario);
+// router.post('/api/usuarios/login', UsuarioController.crearUsuario);
 
 // productos
 router.get('/api/productos', ProductoController.traerProductos);
