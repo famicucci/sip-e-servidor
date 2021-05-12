@@ -29,7 +29,7 @@ router.post(
 	],
 	UsuarioController.registroUsuario
 );
-// router.post('/api/usuarios/login', UsuarioController.crearUsuario);
+router.post('/api/usuarios/login', UsuarioController.loginUsuario);
 
 // productos
 router.get('/api/productos', ProductoController.traerProductos);

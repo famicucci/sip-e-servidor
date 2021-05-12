@@ -1,6 +1,8 @@
 const { Usuario } = require('../models/index');
 const bcryptjs = require('bcryptjs');
 const { validationResult } = require('express-validator');
+const moment = require('moment');
+const jwt = require('jwt-simple');
 
 exports.registroUsuario = async (req, res) => {
 	const errors = validationResult(req);
@@ -23,6 +25,23 @@ exports.registroUsuario = async (req, res) => {
 	}
 };
 
+exports.loginUsuario = async (req, res) => {
+	const usuario = await Usuario.findOne({
+		where: { usuario: req.body.usuario },
+	});
+	if (usuario) {
+		const iguales = bcryptjs.compareSync(req.body.password, usuario.password);
+
+		if (iguales) {
+			res.json({ success: createToken(usuario) });
+		} else {
+			res.json({ error: 'Error n usuario y/o contraseña' });
+		}
+	} else {
+		res.json({ error: 'Error en usuario y/o contraseña' });
+	}
+};
+
 // modificar
 // encontrar el usuario por el id y modificarlo
 exports.modificarUsuario = async (req, res) => {
@@ -40,6 +59,13 @@ exports.modificarUsuario = async (req, res) => {
 	}
 };
 
-// registro
-
 // eliminar
+
+const createToken = (usuario) => {
+	const payload = {
+		usuarioId: usuario.id,
+		createAt: moment().unix(),
+		expiredAt: moment().add(5, 'minutes').unix(),
+	};
+	return jwt.encode(payload, 'frase secreta');
+};
