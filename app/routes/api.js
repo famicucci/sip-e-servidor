@@ -7,7 +7,7 @@ const apiEmpresasRouter = require('./api/empresas');
 const apiUsuariosRouter = require('./api/usuarios');
 
 router.use('/productos', middlewares.checkToken, apiProductosRouter);
-router.use('/empresas', apiEmpresasRouter);
+router.use('/empresas', middlewares.checkToken, apiEmpresasRouter);
 router.use('/usuarios', apiUsuariosRouter);
 
 module.exports = router;
