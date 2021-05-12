@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const { sequelize } = require('./models/index');
+const apiRouter = require('./routes/api');
 
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
@@ -10,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 const PORT = process.env.PORT || 4000;
 
 // rutas
-app.use(require('./routes'));
+app.use('/api', apiRouter);
 
 // arrancar el servidor
 app.listen(PORT, () => {
