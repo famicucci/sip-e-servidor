@@ -1,7 +1,13 @@
 const { Usuario } = require('../models/index');
 const bcryptjs = require('bcryptjs');
+const { validationResult } = require('express-validator');
 
 exports.registroUsuario = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errores: errors.array() });
+	}
+
 	try {
 		req.body.password = bcryptjs.hashSync(req.body.password, 10);
 		const usuarios = await Usuario.create({
