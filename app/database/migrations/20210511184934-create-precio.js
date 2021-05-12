@@ -19,10 +19,10 @@ module.exports = {
 				type: Sequelize.DECIMAL(10, 2),
 				allowNull: false,
 			},
-			PrecioListaId: {
+			ListaPrecioId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
-				references: { model: 'preciolistas', key: 'id' },
+				references: { model: 'listaprecios', key: 'id' },
 			},
 			createdAt: {
 				allowNull: false,

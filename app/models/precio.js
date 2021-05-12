@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class Precio extends Model {
 		static associate(models) {
-			Precio.belongsTo(models.PrecioLista);
+			Precio.belongsTo(models.ListaPrecio);
 			Precio.belongsTo(models.Producto);
 		}
 	}
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			ProductoCodigo: DataTypes.STRING(15),
 			pu: DataTypes.DECIMAL(10, 2),
-			PrecioListaId: DataTypes.INTEGER,
+			ListaPrecioId: DataTypes.INTEGER,
 		},
 		{
 			sequelize,

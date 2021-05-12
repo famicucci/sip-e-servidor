@@ -8,10 +8,10 @@ module.exports = {
 			{ descripcion: 'Lista Minorista', estado: 'Vigente', EmpresaId: '2' },
 			{ descripcion: 'Lista Mayorista', estado: 'No vigente', EmpresaId: '2' },
 		];
-		await queryInterface.bulkInsert('preciolistas', precioListas, {});
+		await queryInterface.bulkInsert('listaprecios', precioListas, {});
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('preciolistas', null, {});
+		await queryInterface.bulkDelete('listaprecios', null, {});
 	},
 };

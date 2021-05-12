@@ -1,13 +1,14 @@
 'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-	class PrecioLista extends Model {
+	class ListaPrecio extends Model {
 		static associate(models) {
-			PrecioLista.belongsTo(models.Empresa);
-			PrecioLista.hasMany(models.PrecioLista);
+			ListaPrecio.belongsTo(models.Empresa);
+			ListaPrecio.hasMany(models.Precio);
 		}
 	}
-	PrecioLista.init(
+	ListaPrecio.init(
 		{
 			descripcion: DataTypes.STRING(30),
 			estado: DataTypes.STRING(15),
@@ -15,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			sequelize,
-			modelName: 'PrecioLista',
+			modelName: 'ListaPrecio',
 		}
 	);
-	return PrecioLista;
+	return ListaPrecio;
 };
