@@ -1,4 +1,4 @@
-const { Producto, Empresa } = require('../models/index');
+const { Producto } = require('../models/index');
 
 exports.traerProductos = async (req, res) => {
 	try {
@@ -18,8 +18,6 @@ exports.crearProducto = async (req, res) => {
 			descripcion: req.body.descripcion,
 			EmpresaId: req.body.EmpresaId,
 		});
-		// crear registro en model: Stock (tiene que ser para todos los puntos de stock)
-		// crear registro en model: Precio (tiene que ser para todas las listas de precio)
 		res.json(producto);
 	} catch (error) {
 		console.log(req.body);

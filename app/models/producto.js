@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Producto.belongsTo(models.Empresa);
 			Producto.hasMany(models.Stock, {
-				foreignKey: { allowNull: false },
+				// foreignKey: { allowNull: false },
 				onDelete: 'cascade',
 			});
 			Producto.hasMany(models.MovimientoStock, {
