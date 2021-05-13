@@ -5,8 +5,6 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Stock.belongsTo(models.PtoStock);
 			Stock.belongsTo(models.Producto, {
-				// as: 'stockProducto',
-				// sourceKey: 'codigo',
 				foreignKey: 'ProductoCodigo',
 			});
 		}
@@ -14,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
 	Stock.init(
 		{
 			cantidad: DataTypes.INTEGER,
-			PtoStockId: DataTypes.INTEGER,
 		},
 		{
 			sequelize,

@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
 				as: 'stockProducto',
 				sourceKey: 'codigo',
 				foreignKey: 'ProductoCodigo',
+				allowNull: false,
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
 			});
 			Producto.hasMany(models.MovimientoStock, {
 				foreignKey: { allowNull: false },
