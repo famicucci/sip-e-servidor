@@ -23,6 +23,7 @@ const checkToken = (req, res, next) => {
 
 	req.usuarioId = payload.usuarioId;
 	req.usuarioRol = payload.usuarioRol;
+	req.usuarioEmpresaId = payload.usuarioEmpresaId;
 
 	payload = next();
 };

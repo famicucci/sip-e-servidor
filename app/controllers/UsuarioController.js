@@ -65,6 +65,7 @@ const createToken = (usuario) => {
 	const payload = {
 		usuarioId: usuario.id,
 		usuarioRol: usuario.rol,
+		usuarioEmpresaId: usuario.EmpresaId,
 		createAt: moment().unix(),
 		expiredAt: moment().add(24, 'hours').unix(),
 	};

@@ -12,7 +12,7 @@ exports.traerProductos = async (req, res) => {
 };
 
 exports.crearProducto = async (req, res) => {
-	// consultar en bd cuantos los puntos de stock de la empresa
+	// consultar en bd los puntos de stock de la empresa
 	const ptosStock = await PtoStock.findAll(
 		{
 			attributes: ['id'],
@@ -20,7 +20,7 @@ exports.crearProducto = async (req, res) => {
 				{
 					model: Empresa,
 					attributes: [],
-					where: { id: req.body.EmpresaId },
+					where: { id: req.usuarioEmpresaId },
 				},
 			],
 		},
@@ -42,7 +42,7 @@ exports.crearProducto = async (req, res) => {
 			{
 				codigo: req.body.codigo,
 				descripcion: req.body.descripcion,
-				EmpresaId: req.body.EmpresaId,
+				EmpresaId: req.usuarioEmpresaId,
 				stockProducto: stockIniciales,
 			},
 			{
