@@ -18,11 +18,18 @@ exports.crearProducto = async (req, res) => {
 				codigo: req.body.codigo,
 				descripcion: req.body.descripcion,
 				EmpresaId: req.body.EmpresaId,
-				stockProducto: {
-					cantidad: req.body.cantidad,
-					PtoStockId: req.body.PtoStockId,
-					ProductoId: req.body.codigo,
-				},
+				stockProducto: [
+					{
+						cantidad: req.body.cantidad,
+						PtoStockId: req.body.PtoStockId,
+						ProductoId: req.body.codigo,
+					},
+					{
+						cantidad: req.body.cantidad,
+						PtoStockId: 4,
+						ProductoId: req.body.codigo,
+					},
+				],
 			},
 			{
 				include: 'stockProducto',
