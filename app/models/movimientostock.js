@@ -3,22 +3,31 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class MovimientoStock extends Model {
 		static associate(models) {
-			MovimientoStock.belongsTo(models.Producto);
-			MovimientoStock.belongsTo(models.PtoStock);
-			MovimientoStock.belongsTo(models.Usuario);
+			MovimientoStock.belongsTo(models.Producto, {
+				foreignKey: 'ProductoCodigo',
+				targetKey: 'codigo',
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
+			MovimientoStock.belongsTo(models.PtoStock, {
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
+			MovimientoStock.belongsTo(models.Usuario, {
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	MovimientoStock.init(
 		{
-			ProductoCodigo: DataTypes.STRING(15),
-			cantidad: DataTypes.INTEGER,
-			PtoStockId: DataTypes.INTEGER,
-			UsuarioId: DataTypes.INTEGER,
+			cantidad: { type: DataTypes.INTEGER, allowNull: false },
 			motivo: DataTypes.STRING(30),
 		},
 		{
 			sequelize,
 			modelName: 'MovimientoStock',
+			updatedAt: false,
 		}
 	);
 	return MovimientoStock;

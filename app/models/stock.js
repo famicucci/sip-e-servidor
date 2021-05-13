@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 			Stock.belongsTo(models.PtoStock);
 			Stock.belongsTo(models.Producto, {
 				foreignKey: 'ProductoCodigo',
+				// Targetkey?????
 			});
 		}
 	}
