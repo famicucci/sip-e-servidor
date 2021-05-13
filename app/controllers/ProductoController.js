@@ -1,4 +1,5 @@
 const { Producto, PtoStock, Empresa } = require('../models/index');
+const { sequelize } = require('../models/index');
 
 exports.traerProductos = async (req, res) => {
 	try {
@@ -37,6 +38,9 @@ exports.crearProducto = async (req, res) => {
 		stockIniciales.push(stockInicial);
 	});
 
+	// rollback
+	const t = await sequelize.transaction();
+
 	try {
 		const producto = await Producto.create(
 			{
@@ -47,12 +51,14 @@ exports.crearProducto = async (req, res) => {
 			},
 			{
 				include: 'stockProducto',
+				transaction: t,
 			}
 		);
+		await t.commit();
 		res.json(producto);
 	} catch (error) {
-		console.log('Deberia hacer un rollback si entra al catch');
-		res.json(error);
+		await t.rollback();
+		res.json({ error: 'Un error ha ocurrido' });
 	}
 };
 
