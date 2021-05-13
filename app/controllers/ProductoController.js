@@ -1,4 +1,4 @@
-const { Producto } = require('../models/index');
+const { Producto, PtoStock, Empresa } = require('../models/index');
 
 exports.traerProductos = async (req, res) => {
 	try {
@@ -13,30 +13,37 @@ exports.traerProductos = async (req, res) => {
 
 exports.crearProducto = async (req, res) => {
 	// consultar en bd cuantos los puntos de stock de la empresa
-	// const ptosStock = [1, 4];
-	// let stockIniciales = [];
-	// ptosStock.forEach(ptoStock => {
-	// 	const stockInicial = {cantidad: 0, PtoStockId: ptoStock, ProductoId: req.body.codigo}
+	const ptosStock = await PtoStock.findAll(
+		{
+			attributes: ['id'],
+			include: [
+				{
+					model: Empresa,
+					attributes: [],
+					where: { id: req.body.EmpresaId },
+				},
+			],
+		},
+		{}
+	);
 
-	// });
+	let stockIniciales = [];
+	ptosStock.forEach((ptoStock) => {
+		const stockInicial = {
+			cantidad: 0,
+			PtoStockId: ptoStock.id,
+			ProductoCodigo: req.body.codigo,
+		};
+		stockIniciales.push(stockInicial);
+	});
+
 	try {
 		const producto = await Producto.create(
 			{
 				codigo: req.body.codigo,
 				descripcion: req.body.descripcion,
 				EmpresaId: req.body.EmpresaId,
-				stockProducto: [
-					{
-						cantidad: 0,
-						PtoStockId: req.body.PtoStockId,
-						ProductoCodigo: req.body.codigo,
-					},
-					{
-						cantidad: 0,
-						PtoStockId: 2,
-						ProductoCodigo: req.body.codigo,
-					},
-				],
+				stockProducto: stockIniciales,
 			},
 			{
 				include: 'stockProducto',
@@ -44,7 +51,7 @@ exports.crearProducto = async (req, res) => {
 		);
 		res.json(producto);
 	} catch (error) {
-		console.log(req.body);
+		console.log('Deberia hacer un rollback si entra al catch');
 		res.json(error);
 	}
 };
