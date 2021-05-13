@@ -13,11 +13,21 @@ exports.traerProductos = async (req, res) => {
 
 exports.crearProducto = async (req, res) => {
 	try {
-		const producto = await Producto.create({
-			codigo: req.body.codigo,
-			descripcion: req.body.descripcion,
-			EmpresaId: req.body.EmpresaId,
-		});
+		const producto = await Producto.create(
+			{
+				codigo: req.body.codigo,
+				descripcion: req.body.descripcion,
+				EmpresaId: req.body.EmpresaId,
+				stockProducto: {
+					cantidad: req.body.cantidad,
+					PtoStockId: req.body.PtoStockId,
+					ProductoId: req.body.codigo,
+				},
+			},
+			{
+				include: 'stockProducto',
+			}
+		);
 		res.json(producto);
 	} catch (error) {
 		console.log(req.body);
