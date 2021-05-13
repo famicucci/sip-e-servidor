@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 			Producto.hasMany(models.Stock, {
 				as: 'stockProducto',
 				sourceKey: 'codigo',
+				foreignKey: 'ProductoCodigo',
 			});
 			Producto.hasMany(models.MovimientoStock, {
 				foreignKey: { allowNull: false },

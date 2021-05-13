@@ -4,7 +4,11 @@ module.exports = (sequelize, DataTypes) => {
 	class Stock extends Model {
 		static associate(models) {
 			Stock.belongsTo(models.PtoStock);
-			Stock.belongsTo(models.Producto);
+			Stock.belongsTo(models.Producto, {
+				// as: 'stockProducto',
+				// sourceKey: 'codigo',
+				foreignKey: 'ProductoCodigo',
+			});
 		}
 	}
 	Stock.init(

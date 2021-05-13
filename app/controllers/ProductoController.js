@@ -12,6 +12,13 @@ exports.traerProductos = async (req, res) => {
 };
 
 exports.crearProducto = async (req, res) => {
+	// consultar en bd cuantos los puntos de stock de la empresa
+	// const ptosStock = [1, 4];
+	// let stockIniciales = [];
+	// ptosStock.forEach(ptoStock => {
+	// 	const stockInicial = {cantidad: 0, PtoStockId: ptoStock, ProductoId: req.body.codigo}
+
+	// });
 	try {
 		const producto = await Producto.create(
 			{
@@ -20,14 +27,14 @@ exports.crearProducto = async (req, res) => {
 				EmpresaId: req.body.EmpresaId,
 				stockProducto: [
 					{
-						cantidad: req.body.cantidad,
+						cantidad: 0,
 						PtoStockId: req.body.PtoStockId,
-						ProductoId: req.body.codigo,
+						ProductoCodigo: req.body.codigo,
 					},
 					{
-						cantidad: req.body.cantidad,
-						PtoStockId: 4,
-						ProductoId: req.body.codigo,
+						cantidad: 0,
+						PtoStockId: 2,
+						ProductoCodigo: req.body.codigo,
 					},
 				],
 			},
