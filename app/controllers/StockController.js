@@ -3,20 +3,7 @@ const { Stock, MovimientoStock } = require('../models/index');
 // modificar
 exports.modificarStock = async (req, res) => {
 	try {
-		const cantActual = await Stock.findOne({
-			attributes: ['cantidad'],
-			where: {
-				ProductoCodigo: req.body.ProductoCodigo,
-				PtoStockId: req.body.PtoStockId,
-			},
-		});
-
-		// revisa si la cantidad final es negativa
-		if (cantActual.cantidad + req.body.cantidad < 0) {
-			res.json({ error: 'El stock no puede ser negativo' });
-			return;
-		}
-
+		// si la cantidad resultante es negativa envia al catch (debido a atributo UNSIGNED)
 		// si el producto no existe envía al catch
 		const modificaStock = await Stock.increment('cantidad', {
 			by: req.body.cantidad,

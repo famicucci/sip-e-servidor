@@ -12,12 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Stock.init(
 		{
-			cantidad: {
-				type: DataTypes.INTEGER,
-				validate: {
-					min: 0,
-				},
-			},
+			cantidad: { type: DataTypes.INTEGER(11).UNSIGNED, allowNull: false },
 		},
 		{
 			sequelize,
