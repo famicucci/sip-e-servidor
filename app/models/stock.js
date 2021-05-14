@@ -5,8 +5,10 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Stock.belongsTo(models.PtoStock);
 			Stock.belongsTo(models.Producto, {
-				foreignKey: 'ProductoCodigo',
+				foreignKey: { name: 'ProductoCodigo', allowNull: false },
 				targetKey: 'codigo',
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
 			});
 		}
 	}

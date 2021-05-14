@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 			Producto.hasMany(models.Stock, {
 				as: 'stockProducto',
 				sourceKey: 'codigo',
-				foreignKey: 'ProductoCodigo',
-				allowNull: false,
+				foreignKey: { name: 'ProductoCodigo', allowNull: false },
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
