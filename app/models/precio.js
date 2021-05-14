@@ -4,14 +4,18 @@ module.exports = (sequelize, DataTypes) => {
 	class Precio extends Model {
 		static associate(models) {
 			Precio.belongsTo(models.ListaPrecio);
-			Precio.belongsTo(models.Producto);
+			Precio.belongsTo(models.Producto, {
+				foreignKey: 'ProductoCodigo',
+				targetKey: 'codigo',
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	Precio.init(
 		{
-			ProductoCodigo: DataTypes.STRING(15),
-			pu: DataTypes.DECIMAL(10, 2),
-			ListaPrecioId: DataTypes.INTEGER,
+			pu: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+			ListaPrecioId: { type: DataTypes.INTEGER, allowNull: false },
 		},
 		{
 			sequelize,
