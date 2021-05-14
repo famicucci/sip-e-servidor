@@ -28,7 +28,7 @@ exports.modificarStock = async (req, res) => {
 };
 
 // traer stock por punto de stock
-exports.traerStockPtoStock = async (req, res) => {
+exports.traerStock = async (req, res) => {
 	try {
 		// consulta a tabla stocks
 		const stocks = await Stock.findAll({
@@ -44,7 +44,5 @@ exports.traerStockPtoStock = async (req, res) => {
 		res.json({ error });
 	}
 };
-
-// traer stock total
 
 // traer movimientos de stock
