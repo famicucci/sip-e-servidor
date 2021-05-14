@@ -20,5 +20,6 @@ router.post(
 
 // login
 router.post('/login', UsuarioController.loginUsuario);
+router.delete('/:UsuarioId', UsuarioController.eliminarUsuario);
 
 module.exports = router;

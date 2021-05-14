@@ -42,8 +42,19 @@ exports.loginUsuario = async (req, res) => {
 	}
 };
 
+// eliminar
+exports.eliminarUsuario = async (req, res) => {
+	try {
+		const usuario = await Usuario.destroy({
+			where: { id: req.params.UsuarioId },
+		});
+		res.json({ success: 'El usuario ha sido eliminado' });
+	} catch (error) {
+		res.json(error);
+	}
+};
+
 // modificar
-// encontrar el usuario por el id y modificarlo
 exports.modificarUsuario = async (req, res) => {
 	try {
 		const usuarios = await Usuario.create({
@@ -59,8 +70,7 @@ exports.modificarUsuario = async (req, res) => {
 	}
 };
 
-// eliminar
-
+// funcion para crear el token de login
 const createToken = (usuario) => {
 	const payload = {
 		usuarioId: usuario.id,
