@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Precio.belongsTo(models.ListaPrecio);
 			Precio.belongsTo(models.Producto, {
-				foreignKey: 'ProductoCodigo',
+				foreignKey: { name: 'ProductoCodigo', allowNull: false },
 				targetKey: 'codigo',
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
