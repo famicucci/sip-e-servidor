@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -9,6 +10,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'movimiento',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'RA100031LM',
@@ -16,6 +18,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'venta',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'PJ100022LM',
@@ -23,6 +26,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'venta',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'PJ100027LM',
@@ -30,6 +34,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'movimiento',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'PJ100022LM',
@@ -37,6 +42,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'movimiento',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'RA100031LM',
@@ -44,6 +50,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'venta',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'PJ100022LM',
@@ -51,6 +58,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'venta',
+				createdAt: moment().format(),
 			},
 			{
 				ProductoCodigo: 'RA100031LM',
@@ -58,6 +66,7 @@ module.exports = {
 				PtoStockId: 1,
 				UsuarioId: 3,
 				motivo: 'movimiento',
+				createdAt: moment().format(),
 			},
 		];
 		await queryInterface.bulkInsert('movimientostocks', movimientos, {});

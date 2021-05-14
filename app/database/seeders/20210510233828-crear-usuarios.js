@@ -1,5 +1,6 @@
 'use strict';
 const bcryptjs = require('bcryptjs');
+const moment = require('moment');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -10,6 +11,7 @@ module.exports = {
 				usuario: 'famicucci',
 				rol: 1,
 				EmpresaId: 1,
+				createdAt: moment().format(),
 			},
 			{
 				nombre: 'Camila Di Giacomo',
@@ -17,6 +19,7 @@ module.exports = {
 				usuario: 'cdigiacomo',
 				rol: 1,
 				EmpresaId: 1,
+				createdAt: moment().format(),
 			},
 			{
 				nombre: 'Yazmín Juarez',
@@ -24,6 +27,7 @@ module.exports = {
 				usuario: 'yjuarez',
 				rol: 1,
 				EmpresaId: 1,
+				createdAt: moment().format(),
 			},
 			{
 				nombre: 'Jennifer Laurence',
@@ -31,6 +35,7 @@ module.exports = {
 				usuario: 'jlaurence',
 				rol: 0,
 				EmpresaId: 1,
+				createdAt: moment().format(),
 			},
 			{
 				nombre: 'Agustín Verrando',
@@ -38,6 +43,7 @@ module.exports = {
 				usuario: 'averrando',
 				rol: 0,
 				EmpresaId: 1,
+				createdAt: moment().format(),
 			},
 		];
 		await queryInterface.bulkInsert('usuarios', usuarios, {});
