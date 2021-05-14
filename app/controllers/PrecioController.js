@@ -12,3 +12,28 @@ exports.crearPrecio = async (req, res) => {
 		res.json(error);
 	}
 };
+
+exports.modificarPrecio = async (req, res) => {
+	try {
+		const precio = await Precio.update(
+			{
+				pu: req.body.pu,
+			},
+			{
+				where: {
+					ProductoCodigo: req.body.ProductoCodigo,
+					ListaPrecioId: req.body.ListaPrecioId,
+				},
+			}
+		);
+
+		// verifica si el update fue exitoso
+		if (precio[0]) {
+			res.json({ success: 'Precio Modificado' });
+		} else {
+			res.json({ error: 'El registro no se encuentra en la base de datos' });
+		}
+	} catch (error) {
+		res.json({ error: 'Ocurrió un error' });
+	}
+};
