@@ -92,7 +92,12 @@ exports.eliminarProducto = async (req, res) => {
 		const producto = await Producto.destroy({
 			where: { codigo: req.params.ProductoCodigo },
 		});
-		res.json({ success: 'El producto ha sido eliminado' });
+
+		if (producto) {
+			res.json({ success: 'Producto eliminado' });
+		} else {
+			res.json({ error: 'No se produjo ningún cambio en la base de datos' });
+		}
 	} catch (error) {
 		res.json(error);
 	}

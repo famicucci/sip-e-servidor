@@ -86,7 +86,12 @@ exports.eliminarUsuario = async (req, res) => {
 		const usuario = await Usuario.destroy({
 			where: { id: req.params.Id },
 		});
-		res.json({ success: 'El usuario ha sido eliminado' });
+
+		if (usuario) {
+			res.json({ success: 'Usuario eliminado' });
+		} else {
+			res.json({ error: 'No se produjo ningún cambio en la base de datos' });
+		}
 	} catch (error) {
 		res.json(error);
 	}
