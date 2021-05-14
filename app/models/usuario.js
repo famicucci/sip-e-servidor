@@ -4,7 +4,11 @@ module.exports = (sequelize, DataTypes) => {
 	class Usuario extends Model {
 		static associate(models) {
 			Usuario.belongsTo(models.Empresa);
-			Usuario.hasMany(models.MovimientoStock);
+			Usuario.hasMany(models.MovimientoStock, {
+				foreignKey: { allowNull: false },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	Usuario.init(

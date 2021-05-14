@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'CASCADE',
 			});
 			MovimientoStock.belongsTo(models.Usuario, {
+				foreignKey: { allowNull: false },
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
@@ -23,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 	MovimientoStock.init(
 		{
 			cantidad: { type: DataTypes.INTEGER, allowNull: false },
-			motivo: DataTypes.STRING(30),
+			motivo: { type: DataTypes.STRING(30), allowNull: false },
 		},
 		{
 			sequelize,
