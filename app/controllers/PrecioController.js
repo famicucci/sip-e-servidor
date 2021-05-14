@@ -1,4 +1,4 @@
-const { Precio } = require('../models/index');
+const { Precio, Producto } = require('../models/index');
 
 exports.crearPrecio = async (req, res) => {
 	try {
@@ -35,5 +35,21 @@ exports.modificarPrecio = async (req, res) => {
 		}
 	} catch (error) {
 		res.json({ error: 'Ocurrió un error' });
+	}
+};
+
+// traer stock por punto de stock
+exports.traerPrecios = async (req, res) => {
+	try {
+		const stocks = await Precio.findAll({
+			include: {
+				model: Producto,
+				attributes: ['descripcion'],
+				where: { EmpresaId: req.usuarioEmpresaId },
+			},
+		});
+		res.json(stocks);
+	} catch (error) {
+		res.json({ error });
 	}
 };
