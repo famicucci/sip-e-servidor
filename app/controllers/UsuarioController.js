@@ -68,7 +68,13 @@ exports.modificarUsuario = async (req, res) => {
 				where: { id: req.params.Id },
 			}
 		);
-		res.json({ success: 'El usuario ha sido modificado' });
+
+		// verifica si el update fue exitoso
+		if (usuario[0]) {
+			res.json({ success: 'El usuario ha sido modificado' });
+		} else {
+			res.json({ error: 'No se produjo ningún cambio' });
+		}
 	} catch (error) {
 		res.json(error);
 	}

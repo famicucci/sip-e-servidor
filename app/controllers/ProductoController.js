@@ -74,9 +74,15 @@ exports.modificarProducto = async (req, res) => {
 				where: { codigo: req.params.ProductoCodigo },
 			}
 		);
-		res.json({ success: 'El producto ha sido modificado' });
+
+		// verifica si el update fue exitoso
+		if (producto[0]) {
+			res.json({ success: 'El producto ha sido modificado' });
+		} else {
+			res.json({ error: 'No se produjo ningún cambio en la base de datos' });
+		}
 	} catch (error) {
-		res.json(error);
+		res.json({ error: 'Ocurrió un error' });
 	}
 };
 

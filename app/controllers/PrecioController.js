@@ -31,7 +31,7 @@ exports.modificarPrecio = async (req, res) => {
 		if (precio[0]) {
 			res.json({ success: 'Precio Modificado' });
 		} else {
-			res.json({ error: 'El registro no se encuentra en la base de datos' });
+			res.json({ error: 'No se produjo ningún cambio en la base de datos' });
 		}
 	} catch (error) {
 		res.json({ error: 'Ocurrió un error' });
