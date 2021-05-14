@@ -5,6 +5,7 @@ exports.traerProductos = async (req, res) => {
 	try {
 		const productos = await Producto.findAll({
 			attributes: ['codigo', 'descripcion'],
+			where: { EmpresaId: req.usuarioEmpresaId },
 		});
 		res.json(productos);
 	} catch (error) {
