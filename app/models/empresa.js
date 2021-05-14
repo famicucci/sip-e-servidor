@@ -4,9 +4,21 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class Empresa extends Model {
 		static associate(models) {
-			Empresa.hasMany(models.Producto, { foreignKey: { allowNull: false } });
-			Empresa.hasMany(models.Usuario, { foreignKey: { allowNull: false } });
-			Empresa.hasMany(models.PtoStock, { foreignKey: { allowNull: false } });
+			Empresa.hasMany(models.Producto, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
+			Empresa.hasMany(models.Usuario, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
+			Empresa.hasMany(models.PtoStock, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 			Empresa.hasMany(models.ListaPrecio, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',

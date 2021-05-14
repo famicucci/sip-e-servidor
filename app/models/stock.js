@@ -3,7 +3,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class Stock extends Model {
 		static associate(models) {
-			Stock.belongsTo(models.PtoStock);
+			Stock.belongsTo(models.PtoStock, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 			Stock.belongsTo(models.Producto, {
 				foreignKey: { name: 'ProductoCodigo', allowNull: false },
 				targetKey: 'codigo',

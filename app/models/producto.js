@@ -3,7 +3,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class Producto extends Model {
 		static associate(models) {
-			Producto.belongsTo(models.Empresa);
+			Producto.belongsTo(models.Empresa, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 			Producto.hasMany(models.Stock, {
 				as: 'stockProducto',
 				sourceKey: 'codigo',
