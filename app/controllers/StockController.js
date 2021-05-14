@@ -1,4 +1,4 @@
-const { Stock, MovimientoStock } = require('../models/index');
+const { Stock, MovimientoStock, Producto } = require('../models/index');
 
 // modificar
 exports.modificarStock = async (req, res) => {
@@ -26,3 +26,25 @@ exports.modificarStock = async (req, res) => {
 		res.json({ error: 'Ocurrió un error' });
 	}
 };
+
+// traer stock por punto de stock
+exports.traerStockPtoStock = async (req, res) => {
+	try {
+		// consulta a tabla stocks
+		const stocks = await Stock.findAll({
+			attributes: ['ProductoCodigo', 'cantidad', 'PtoStockId'],
+			include: {
+				model: Producto,
+				attributes: ['descripcion'],
+				where: { EmpresaId: req.usuarioEmpresaId },
+			},
+		});
+		res.json(stocks);
+	} catch (error) {
+		res.json({ error });
+	}
+};
+
+// traer stock total
+
+// traer movimientos de stock
