@@ -38,7 +38,6 @@ exports.modificarPrecio = async (req, res) => {
 	}
 };
 
-// traer stock por punto de stock
 exports.traerPrecios = async (req, res) => {
 	try {
 		const stocks = await Precio.findAll({
@@ -51,5 +50,25 @@ exports.traerPrecios = async (req, res) => {
 		res.json(stocks);
 	} catch (error) {
 		res.json({ error });
+	}
+};
+
+// eliminar
+exports.eliminarPrecio = async (req, res) => {
+	try {
+		const precio = await Precio.destroy({
+			where: {
+				ProductoCodigo: req.body.ProductoCodigo,
+				ListaPrecioId: req.body.ListaPrecioId,
+			},
+		});
+
+		if (precio) {
+			res.json({ success: 'Precio eliminado' });
+		} else {
+			res.json({ error: 'No se produjo ningún cambio en la base de datos' });
+		}
+	} catch (error) {
+		res.json({ error: 'Ocurrió un error' });
 	}
 };
