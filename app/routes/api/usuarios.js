@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
+const middlewares = require('../middlewares');
 const UsuarioController = require('../../controllers/UsuarioController');
 
 // registro
@@ -20,6 +21,11 @@ router.post(
 
 // login
 router.post('/login', UsuarioController.loginUsuario);
-router.delete('/:UsuarioId', UsuarioController.eliminarUsuario);
+router.put('/:Id', middlewares.checkToken, UsuarioController.modificarUsuario);
+router.delete(
+	'/:Id',
+	middlewares.checkToken,
+	UsuarioController.eliminarUsuario
+);
 
 module.exports = router;

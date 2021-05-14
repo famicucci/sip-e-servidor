@@ -42,29 +42,45 @@ exports.loginUsuario = async (req, res) => {
 	}
 };
 
-// eliminar
-exports.eliminarUsuario = async (req, res) => {
+// modificar
+exports.modificarUsuario = async (req, res) => {
 	try {
-		const usuario = await Usuario.destroy({
-			where: { id: req.params.UsuarioId },
-		});
-		res.json({ success: 'El usuario ha sido eliminado' });
+		if (req.body.password) {
+			req.body.password = bcryptjs.hashSync(req.body.password, 10);
+		}
+
+		if (req.body.rol !== undefined) {
+			if (!req.usuarioRol) {
+				res.json({
+					error:
+						'Este usuario no tiene los permisos necesarios para realizar esta acción',
+				});
+				return;
+			}
+		}
+
+		const usuario = await Usuario.update(
+			{
+				password: req.body.password,
+				rol: req.body.rol,
+			},
+			{
+				where: { id: req.params.Id },
+			}
+		);
+		res.json({ success: 'El usuario ha sido modificado' });
 	} catch (error) {
 		res.json(error);
 	}
 };
 
-// modificar
-exports.modificarUsuario = async (req, res) => {
+// eliminar
+exports.eliminarUsuario = async (req, res) => {
 	try {
-		const usuarios = await Usuario.create({
-			nombre: req.body.nombre,
-			password: req.body.password,
-			usuario: req.body.usuario,
-			rol: req.body.rol,
-			EmpresaId: req.body.EmpresaId,
+		const usuario = await Usuario.destroy({
+			where: { id: req.params.Id },
 		});
-		res.json(usuarios);
+		res.json({ success: 'El usuario ha sido eliminado' });
 	} catch (error) {
 		res.json(error);
 	}
