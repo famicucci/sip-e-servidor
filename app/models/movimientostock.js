@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'CASCADE',
 			});
 			MovimientoStock.belongsTo(models.PtoStock, {
+				foreignKey: { allowNull: false },
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});

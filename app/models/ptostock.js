@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
-			PtoStock.hasMany(models.MovimientoStock);
+			PtoStock.hasMany(models.MovimientoStock, {
+				foreignKey: { allowNull: false },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	PtoStock.init(
