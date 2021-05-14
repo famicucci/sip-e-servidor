@@ -1,4 +1,10 @@
-const { Stock, MovimientoStock, Producto } = require('../models/index');
+const {
+	Stock,
+	MovimientoStock,
+	Producto,
+	PtoStock,
+	Usuario,
+} = require('../models/index');
 
 // modificar
 exports.modificarStock = async (req, res) => {
@@ -46,3 +52,38 @@ exports.traerStock = async (req, res) => {
 };
 
 // traer movimientos de stock
+exports.traerMovimientos = async (req, res) => {
+	try {
+		const movimientos = await MovimientoStock.findAll({
+			attributes: [
+				'id',
+				'cantidad',
+				'motivo',
+				'createdAt',
+				'ProductoCodigo',
+				'PtoStockId',
+				'UsuarioId',
+			],
+			include: [
+				{
+					model: Producto,
+					attributes: ['descripcion'],
+					where: { EmpresaId: req.usuarioEmpresaId },
+				},
+				{
+					model: PtoStock,
+					attributes: ['descripcion'],
+					where: { EmpresaId: req.usuarioEmpresaId },
+				},
+				{
+					model: Usuario,
+					attributes: ['usuario'],
+					where: { EmpresaId: req.usuarioEmpresaId },
+				},
+			],
+		});
+		res.json(movimientos);
+	} catch (error) {
+		res.json(error);
+	}
+};
