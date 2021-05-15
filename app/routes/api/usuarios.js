@@ -28,4 +28,6 @@ router.delete(
 	UsuarioController.eliminarUsuario
 );
 
+router.get('/', UsuarioController.traerUsuarios);
+
 module.exports = router;

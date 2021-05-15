@@ -97,6 +97,16 @@ exports.eliminarUsuario = async (req, res) => {
 	}
 };
 
+// eliminar
+exports.traerUsuarios = async (req, res) => {
+	try {
+		const usuario = await Usuario.findAll();
+		res.json(usuario);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
 // funcion para crear el token de login
 const createToken = (usuario) => {
 	const payload = {

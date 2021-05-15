@@ -3,6 +3,10 @@ const app = express();
 require('dotenv').config();
 const { sequelize } = require('./models/index');
 const apiRouter = require('./routes/api');
+const cors = require('cors');
+
+// habilitar cors
+app.use(cors());
 
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
