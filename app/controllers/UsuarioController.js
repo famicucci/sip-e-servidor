@@ -38,7 +38,7 @@ exports.loginUsuario = async (req, res) => {
 			res.json({ error: 'Error n usuario y/o contraseña' });
 		}
 	} else {
-		res.json({ error: 'Error en usuario y/o contraseña' });
+		res.status(400).send({ msj: 'Error en usuario y/o contraseña' });
 	}
 };
 
