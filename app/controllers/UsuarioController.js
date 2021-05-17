@@ -35,7 +35,7 @@ exports.loginUsuario = async (req, res) => {
 		if (iguales) {
 			res.json({ success: createToken(usuario) });
 		} else {
-			res.json({ error: 'Error n usuario y/o contraseña' });
+			res.status(400).send({ msj: 'Error en usuario y/o contraseña' });
 		}
 	} else {
 		res.status(400).send({ msj: 'Error en usuario y/o contraseña' });
@@ -97,13 +97,26 @@ exports.eliminarUsuario = async (req, res) => {
 	}
 };
 
-// eliminar
+// traer todos los Usuarios
 exports.traerUsuarios = async (req, res) => {
 	try {
 		const usuario = await Usuario.findAll();
 		res.json(usuario);
 	} catch (error) {
 		res.json(error);
+	}
+};
+
+// trae usuario autenticado
+exports.usuarioAutenticado = async (req, res) => {
+	try {
+		const usuario = await Usuario.findByPk(req.usuarioId, {
+			attributes: ['id', 'nombre', 'rol', 'usuario', 'EmpresaId'],
+		});
+		res.json({ usuario });
+	} catch (error) {
+		res.json(error);
+		res.status(500).json({ msj: 'Hubo un error' });
 	}
 };
 

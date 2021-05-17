@@ -28,6 +28,11 @@ router.delete(
 	UsuarioController.eliminarUsuario
 );
 
-router.get('/', UsuarioController.traerUsuarios);
+router.get('/', middlewares.checkToken, UsuarioController.traerUsuarios);
+router.get(
+	'/usuario-autenticado',
+	middlewares.checkToken,
+	UsuarioController.usuarioAutenticado
+);
 
 module.exports = router;
