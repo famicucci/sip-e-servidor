@@ -3,9 +3,7 @@ const moment = require('moment');
 
 const checkToken = (req, res, next) => {
 	if (!req.headers['user-token']) {
-		return res.json({
-			error: 'Necesitas incluir el token del usuario en la cabecera',
-		});
+		return res.status(400).send({ msj: 'Debe estar logueado para continuar' });
 	}
 
 	const userToken = req.headers['user-token'];

@@ -115,7 +115,6 @@ exports.usuarioAutenticado = async (req, res) => {
 		});
 		res.json({ usuario });
 	} catch (error) {
-		res.json(error);
 		res.status(500).json({ msj: 'Hubo un error' });
 	}
 };
