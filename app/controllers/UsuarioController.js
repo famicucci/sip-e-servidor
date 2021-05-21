@@ -26,19 +26,23 @@ exports.registroUsuario = async (req, res) => {
 };
 
 exports.loginUsuario = async (req, res) => {
-	const usuario = await Usuario.findOne({
-		where: { usuario: req.body.usuario },
-	});
-	if (usuario) {
-		const iguales = bcryptjs.compareSync(req.body.password, usuario.password);
+	try {
+		const usuario = await Usuario.findOne({
+			where: { usuario: req.body.usuario },
+		});
+		if (usuario) {
+			const iguales = bcryptjs.compareSync(req.body.password, usuario.password);
 
-		if (iguales) {
-			res.json({ success: createToken(usuario) });
+			if (iguales) {
+				res.json({ success: createToken(usuario) });
+			} else {
+				res.status(400).send({ msj: 'Error en usuario y/o contraseña' });
+			}
 		} else {
 			res.status(400).send({ msj: 'Error en usuario y/o contraseña' });
 		}
-	} else {
-		res.status(400).send({ msj: 'Error en usuario y/o contraseña' });
+	} catch (error) {
+		res.json({ error });
 	}
 };
 
