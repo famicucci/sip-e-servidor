@@ -40,14 +40,18 @@ exports.modificarPrecio = async (req, res) => {
 
 exports.traerPrecios = async (req, res) => {
 	try {
-		const stocks = await Precio.findAll({
-			include: {
-				model: Producto,
-				attributes: ['descripcion'],
-				where: { EmpresaId: req.usuarioEmpresaId },
-			},
+		const precios = await Precio.findAll({
+			include: [
+				{
+					model: Producto,
+					attributes: ['descripcion'],
+					where: { EmpresaId: req.usuarioEmpresaId },
+				},
+			],
+			raw: true,
 		});
-		res.json(stocks);
+
+		res.json(precios);
 	} catch (error) {
 		res.status(400).send(error);
 	}
