@@ -49,7 +49,7 @@ exports.traerPrecios = async (req, res) => {
 		});
 		res.json(stocks);
 	} catch (error) {
-		res.json({ error });
+		res.status(400).send(error);
 	}
 };
 
