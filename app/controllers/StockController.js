@@ -5,6 +5,7 @@ const {
 	PtoStock,
 	Usuario,
 } = require('../models/index');
+const { sequelize } = require('../models/index');
 
 // modificar
 exports.modificarStock = async (req, res) => {
@@ -34,20 +35,25 @@ exports.modificarStock = async (req, res) => {
 };
 
 // traer stock por punto de stock
-exports.traerStock = async (req, res) => {
+exports.traerStockProducto = async (req, res) => {
 	try {
 		// consulta a tabla stocks
 		const stocks = await Stock.findAll({
-			attributes: ['ProductoCodigo', 'cantidad', 'PtoStockId'],
+			attributes: [
+				'ProductoCodigo',
+				[sequelize.fn('sum', sequelize.col('cantidad')), 'cantidad'],
+			],
+			group: ['ProductoCodigo'],
 			include: {
 				model: Producto,
 				attributes: ['descripcion'],
 				where: { EmpresaId: req.usuarioEmpresaId },
 			},
+			raw: true,
 		});
 		res.json(stocks);
 	} catch (error) {
-		res.json({ error });
+		res.json(error);
 	}
 };
 
