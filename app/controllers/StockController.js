@@ -62,12 +62,17 @@ exports.traerStockProducto = async (req, res) => {
 	try {
 		// consulta a tabla stocks
 		const stocks = await Stock.findAll({
-			where: { ProductoCodigo: req.body.ProductoCodigo },
-			include: {
-				model: Producto,
-				attributes: ['descripcion'],
-				where: { EmpresaId: req.usuarioEmpresaId },
-			},
+			attributes: ['id', 'cantidad', 'ProductoCodigo', 'PtoStockId'],
+			where: { ProductoCodigo: req.params.codigo },
+			include: [
+				{
+					model: Producto,
+					attributes: ['descripcion'],
+					where: { EmpresaId: req.usuarioEmpresaId },
+				},
+				{ model: PtoStock, attributes: ['descripcion'] },
+			],
+
 			raw: true,
 		});
 		res.json(stocks);
