@@ -9,6 +9,9 @@ const { sequelize } = require('../models/index');
 
 // modificar
 exports.modificarStock = async (req, res) => {
+	// si la cantidad es cero detiene la ejecución
+	if (req.body.cantidad === 0) return;
+
 	try {
 		// si la cantidad resultante es negativa envia al catch (debido a atributo UNSIGNED)
 		// si el producto no existe envía al catch
@@ -28,9 +31,11 @@ exports.modificarStock = async (req, res) => {
 			PtoStockId: req.body.PtoStockId,
 			UsuarioId: req.usuarioId,
 		});
-		res.json({ success: 'Cambio en stock exitoso' });
+		res.json({
+			msj: `Se ha modificado el stock en ${req.body.cantidad} unidades`,
+		});
 	} catch (error) {
-		res.json({ error: 'Ocurrió un error' });
+		res.json({ msj: 'Ocurrió un error' });
 	}
 };
 
