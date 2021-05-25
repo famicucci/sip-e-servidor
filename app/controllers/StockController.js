@@ -9,33 +9,63 @@ const { sequelize } = require('../models/index');
 
 // modificar
 exports.modificarStock = async (req, res) => {
-	// si la cantidad es cero detiene la ejecución
-	if (req.body.cantidad === 0) return;
-
 	try {
-		// si la cantidad resultante es negativa envia al catch (debido a atributo UNSIGNED)
-		// si el producto no existe envía al catch
-		const modificaStock = await Stock.increment('cantidad', {
-			by: req.body.cantidad,
+		// trae el producto actual
+		const producto = await Stock.findOne({
+			attributes: ['cantidad'],
 			where: {
 				ProductoCodigo: req.body.ProductoCodigo,
 				PtoStockId: req.body.PtoStockId,
 			},
 		});
 
-		// insert en tabla movimientos
-		const registraMovimiento = await MovimientoStock.create({
-			cantidad: req.body.cantidad,
-			motivo: req.body.motivo,
-			ProductoCodigo: req.body.ProductoCodigo,
-			PtoStockId: req.body.PtoStockId,
-			UsuarioId: req.usuarioId,
-		});
-		res.json({
-			msj: `Se ha modificado el stock en ${req.body.cantidad} unidades`,
-		});
+		// calcula la diferencia en la cantidad
+		const cambioCantidad = req.body.cantidad - producto.cantidad;
+
+		// si la cant ingresada es negativa o si el cambio de cantidad es cero aborta la operación
+		if (cambioCantidad === 0) {
+			res.json({ msj: 'No hubo cambios en la cantidad' });
+		}
+
+		if (req.body.cantidad < 0) {
+			return res
+				.status(500)
+				.send({ msg: 'La cantidad no puede ser negativa!' });
+		}
+
+		if (producto) {
+			const modificaStock = await Stock.update(
+				{ cantidad: req.body.cantidad },
+				{
+					where: {
+						ProductoCodigo: req.body.ProductoCodigo,
+						PtoStockId: req.body.PtoStockId,
+					},
+				}
+			);
+
+			if (modificaStock[0]) {
+				// insert en tabla movimientos
+				const registraMovimiento = await MovimientoStock.create({
+					cantidad: cambioCantidad,
+					motivo: req.body.motivo,
+					ProductoCodigo: req.body.ProductoCodigo,
+					PtoStockId: req.body.PtoStockId,
+					UsuarioId: req.usuarioId,
+				});
+				res.json({
+					msj: `El stock ha sido modificado en ${cambioCantidad} unidades`,
+				});
+			} else {
+				res
+					.status(400)
+					.send({ msj: 'No se produjo ningún cambio en la base de datos' });
+			}
+		} else {
+			res.json({ msj: 'Hubo un error' });
+		}
 	} catch (error) {
-		res.json({ msj: 'Ocurrió un error' });
+		res.json({ msj: 'Hubo un error' });
 	}
 };
 
