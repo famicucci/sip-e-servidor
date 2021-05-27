@@ -24,13 +24,15 @@ exports.modificarStock = async (req, res) => {
 
 		// si la cant ingresada es negativa o si el cambio de cantidad es cero aborta la operación
 		if (cambioCantidad === 0) {
-			return res.status(200).send({ msg: 'No hubo cambios en la cantidad' });
+			return res
+				.status(200)
+				.send({ msg: 'No hubo cambios en la cantidad', severity: 'warning' });
 		}
 
 		if (req.body.cantidad < 0) {
 			return res
 				.status(500)
-				.send({ msg: 'La cantidad no puede ser negativa!' });
+				.send({ msg: 'La cantidad no puede ser negativa!', severity: 'error' });
 		}
 
 		if (producto) {
@@ -53,19 +55,20 @@ exports.modificarStock = async (req, res) => {
 					PtoStockId: req.body.PtoStockId,
 					UsuarioId: req.usuarioId,
 				});
-				res.json({
-					msj: `El stock ha sido modificado en ${cambioCantidad} unidades`,
+				return res.status(200).send({
+					msg: `El stock ha sido modificado en ${cambioCantidad} unidades`,
+					severity: 'success',
 				});
 			} else {
 				res
 					.status(400)
-					.send({ msj: 'No se produjo ningún cambio en la base de datos' });
+					.send({ msg: 'No se produjo ningún cambio en la base de datos' });
 			}
 		} else {
-			res.json({ msj: 'Hubo un error' });
+			res.json({ msg: 'Hubo un error' });
 		}
 	} catch (error) {
-		res.json({ msj: 'Hubo un error' });
+		res.json({ msg: 'Hubo un error' });
 	}
 };
 
