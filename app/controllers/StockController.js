@@ -24,7 +24,7 @@ exports.modificarStock = async (req, res) => {
 
 		// si la cant ingresada es negativa o si el cambio de cantidad es cero aborta la operación
 		if (cambioCantidad === 0) {
-			res.json({ msj: 'No hubo cambios en la cantidad' });
+			return res.status(200).send({ msg: 'No hubo cambios en la cantidad' });
 		}
 
 		if (req.body.cantidad < 0) {
