@@ -155,6 +155,7 @@ exports.traerMovimientos = async (req, res) => {
 				'PtoStockId',
 				'UsuarioId',
 			],
+			order: [['createdAt', 'DESC']],
 			include: [
 				{
 					model: Producto,
