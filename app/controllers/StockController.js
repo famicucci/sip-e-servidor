@@ -178,3 +178,17 @@ exports.traerMovimientos = async (req, res) => {
 		res.json(error);
 	}
 };
+
+// traer los puntos de stock
+exports.traerPtosStock = async (req, res) => {
+	try {
+		// consulta a tabla stocks
+		const stocks = await PtoStock.findAll({
+			attributes: ['id', 'descripcion'],
+			where: { EmpresaId: req.usuarioEmpresaId },
+		});
+		res.json(stocks);
+	} catch (error) {
+		res.json(error);
+	}
+};

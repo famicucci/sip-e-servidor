@@ -8,4 +8,7 @@ router.get('/pto-stock', StockController.traerStockPtoStock);
 router.get('/producto/:codigo', StockController.traerStockProducto);
 router.get('/movimientos', StockController.traerMovimientos);
 
+// traer los puntos de stock
+router.get('/ptos-stock', StockController.traerPtosStock);
+
 module.exports = router;
