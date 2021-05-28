@@ -7,4 +7,7 @@ router.put('/', PrecioController.modificarPrecio);
 router.get('/', PrecioController.traerPrecios);
 router.delete('/', PrecioController.eliminarPrecio);
 
+// traer listas de precio
+router.get('/listas-precio', PrecioController.traerListasPrecio);
+
 module.exports = router;

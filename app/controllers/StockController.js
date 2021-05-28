@@ -187,7 +187,7 @@ exports.traerPtosStock = async (req, res) => {
 			attributes: ['id', 'descripcion'],
 			where: { EmpresaId: req.usuarioEmpresaId },
 		});
-		res.json(stocks);
+		res.status(200).json(stocks);
 	} catch (error) {
 		res.json(error);
 	}

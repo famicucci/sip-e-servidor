@@ -1,4 +1,4 @@
-const { Precio, Producto } = require('../models/index');
+const { Precio, Producto, ListaPrecio } = require('../models/index');
 
 exports.crearPrecio = async (req, res) => {
 	try {
@@ -74,5 +74,19 @@ exports.eliminarPrecio = async (req, res) => {
 		}
 	} catch (error) {
 		res.json({ error: 'Ocurrió un error' });
+	}
+};
+
+// traer listas de precio
+exports.traerListasPrecio = async (req, res) => {
+	try {
+		const precios = await ListaPrecio.findAll({
+			attributes: ['id', 'descripcion', 'estado', 'createdAt', 'updatedAt'],
+			where: { EmpresaId: req.usuarioEmpresaId },
+		});
+
+		res.status(200).json(precios);
+	} catch (error) {
+		res.status(400).send(error);
 	}
 };
