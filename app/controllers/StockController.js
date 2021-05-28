@@ -172,6 +172,7 @@ exports.traerMovimientos = async (req, res) => {
 					where: { EmpresaId: req.usuarioEmpresaId },
 				},
 			],
+			raw: true,
 		});
 		res.json(movimientos);
 	} catch (error) {
