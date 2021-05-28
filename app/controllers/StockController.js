@@ -95,7 +95,7 @@ exports.traerStockTotal = async (req, res) => {
 	}
 };
 
-// traer stock por punto de stock
+// traer stock del producto
 exports.traerStockProducto = async (req, res) => {
 	try {
 		// consulta a tabla stocks
@@ -113,9 +113,32 @@ exports.traerStockProducto = async (req, res) => {
 
 			raw: true,
 		});
+		res.status(200).json(stocks);
+	} catch (error) {
+		res.status(500).send({ msg: 'Hubo un error' });
+	}
+};
+
+// traer stock por punto de stock
+exports.traerStockPtoStock = async (req, res) => {
+	try {
+		// consulta a tabla stocks
+		const stocks = await Stock.findAll({
+			attributes: ['id', 'cantidad', 'ProductoCodigo', 'PtoStockId'],
+			include: [
+				{
+					model: Producto,
+					attributes: ['descripcion'],
+					where: { EmpresaId: req.usuarioEmpresaId },
+				},
+				{ model: PtoStock, attributes: ['descripcion'] },
+			],
+
+			raw: true,
+		});
 		res.json(stocks);
 	} catch (error) {
-		res.json(error);
+		res.status(500).send({ msg: 'Hubo un error' });
 	}
 };
 
