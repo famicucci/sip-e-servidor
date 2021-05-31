@@ -16,7 +16,9 @@ const checkToken = (req, res, next) => {
 	}
 
 	if (payload.expiredAt < moment().unix()) {
-		return res.json({ error: 'El token ha expirado' });
+		return res
+			.status(400)
+			.json({ msg: 'El token ha expirado', categoria: 'error' });
 	}
 
 	req.usuarioId = payload.usuarioId;

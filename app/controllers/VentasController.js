@@ -20,7 +20,7 @@ exports.traerStockTotal = async (req, res) => {
 			group: ['Producto.Precios.id'],
 			raw: true,
 		});
-		res.json(stocks);
+		res.status(200).json(stocks);
 	} catch (error) {
 		res.json(error);
 	}
