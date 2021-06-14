@@ -59,7 +59,8 @@ exports.crearProducto = async (req, res) => {
 		res.json(producto);
 	} catch (error) {
 		await t.rollback();
-		res.json({ error: 'Un error ha ocurrido' });
+		res.json(error);
+		// res.json({ error: 'Un error ha ocurrido' });
 	}
 };
 
