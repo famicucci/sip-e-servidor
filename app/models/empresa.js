@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			Empresa.hasMany(models.PtoVenta, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 			Empresa.hasMany(models.ListaPrecio, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',

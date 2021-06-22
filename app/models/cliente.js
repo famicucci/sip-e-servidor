@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			Cliente.hasMany(models.Direccion, {
+				foreignKey: { allowNull: false },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	Cliente.init(
@@ -19,15 +24,6 @@ module.exports = (sequelize, DataTypes) => {
 			facebook: { type: DataTypes.STRING(30) },
 			celular: { type: DataTypes.STRING(30) },
 			email: { type: DataTypes.STRING(30), allowNull: false },
-			calle: { type: DataTypes.STRING(30) },
-			numeroCalle: { type: DataTypes.INTEGER },
-			piso: { type: DataTypes.INTEGER(3) },
-			depto: { type: DataTypes.INTEGER(3) },
-			barrio: { type: DataTypes.STRING(30) },
-			ciudad: { type: DataTypes.STRING(30) },
-			provincia: { type: DataTypes.STRING(30) },
-			codPostal: { type: DataTypes.INTEGER },
-			refDireccion: { type: DataTypes.STRING(120) },
 			mascota: { type: DataTypes.STRING(30) },
 			tipo: { type: DataTypes.STRING(15), allowNull: false },
 			dni: { type: DataTypes.STRING(15) },

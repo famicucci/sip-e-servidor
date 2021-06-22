@@ -18,13 +18,17 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
+			PtoStock.hasMany(models.PtoVenta, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 		}
 	}
 	PtoStock.init(
 		{
 			descripcion: { type: DataTypes.STRING(30), allowNull: false },
 			stockMin: DataTypes.INTEGER,
-			// EmpresaId: DataTypes.INTEGER,
 		},
 		{
 			sequelize,
