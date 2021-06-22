@@ -1,29 +1,29 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class MetodoPago extends Model {
+	class Pago extends Model {
 		static associate(models) {
-			MetodoPago.belongsTo(models.Empresa, {
+			Pago.belongsTo(models.Factura, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
-			MetodoPago.hasMany(models.Pago, {
+			Pago.belongsTo(models.MetodoPago, {
 				foreignKey: { allowNull: false },
 				onDelete: 'NO ACTION',
 				onUpdate: 'NO ACTION',
 			});
 		}
 	}
-	MetodoPago.init(
+	Pago.init(
 		{
-			descripcion: { type: DataTypes.STRING(30), allowNull: false },
+			importe: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
 		},
 		{
 			sequelize,
-			modelName: 'MetodoPago',
-			timestamps: false,
+			modelName: 'Pago',
+			updatedAt: false,
 		}
 	);
-	return MetodoPago;
+	return Pago;
 };
