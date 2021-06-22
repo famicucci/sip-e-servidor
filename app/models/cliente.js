@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
+			Cliente.hasMany(models.Orden, {
+				foreignKey: { allowNull: false },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	Cliente.init(

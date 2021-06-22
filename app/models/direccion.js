@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Direccion.init(
 		{
-			calle: { type: DataTypes.STRING(30) },
-			numeroCalle: { type: DataTypes.INTEGER },
+			calle: { type: DataTypes.STRING(30), allowNull: false },
+			numeroCalle: { type: DataTypes.INTEGER, allowNull: false },
 			piso: { type: DataTypes.INTEGER(3) },
 			depto: { type: DataTypes.INTEGER(3) },
-			barrio: { type: DataTypes.STRING(30) },
-			ciudad: { type: DataTypes.STRING(30) },
+			barrio: { type: DataTypes.STRING(30), allowNull: false },
+			ciudad: { type: DataTypes.STRING(30), allowNull: false },
 			provincia: { type: DataTypes.STRING(30) },
-			codPostal: { type: DataTypes.INTEGER },
+			codPostal: { type: DataTypes.INTEGER, allowNull: false },
 			refDireccion: { type: DataTypes.STRING(120) },
 		},
 		{

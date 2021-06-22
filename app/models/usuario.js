@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
+			Usuario.hasMany(models.Orden, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 		}
 	}
 	Usuario.init(
