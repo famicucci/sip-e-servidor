@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			PtoStock.hasMany(models.OrdenDetalle, {
+				foreignKey: { allowNull: false },
+				onDelete: 'NO ACTION',
+				onUpdate: 'NO ACTION',
+			});
 		}
 	}
 	PtoStock.init(

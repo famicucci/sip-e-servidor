@@ -31,6 +31,12 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			});
+			Producto.hasMany(models.OrdenDetalle, {
+				sourceKey: 'codigo',
+				foreignKey: { name: 'ProductoCodigo', allowNull: false },
+				onDelete: 'NO ACTION',
+				onUpdate: 'NO ACTION',
+			});
 		}
 	}
 	Producto.init(

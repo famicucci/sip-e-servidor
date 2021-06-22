@@ -28,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			Orden.hasMany(models.OrdenDetalle, {
+				foreignKey: { allowNull: false },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	Orden.init(
@@ -40,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Orden',
+			updatedAt: false,
 		}
 	);
 	return Orden;
