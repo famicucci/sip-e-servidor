@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			Factura.hasMany(models.FacturaDetalle, {
+				foreignKey: { allowNull: false },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			});
 		}
 	}
 	Factura.init(

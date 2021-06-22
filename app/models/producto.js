@@ -37,6 +37,12 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'NO ACTION',
 				onUpdate: 'NO ACTION',
 			});
+			Producto.hasMany(models.FacturaDetalle, {
+				sourceKey: 'codigo',
+				foreignKey: { name: 'ProductoCodigo', allowNull: false },
+				onDelete: 'NO ACTION',
+				onUpdate: 'NO ACTION',
+			});
 		}
 	}
 	Producto.init(
