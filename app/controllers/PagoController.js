@@ -6,6 +6,7 @@ exports.crearPago = async (req, res) => {
 			importe: req.body.importe,
 			FacturaId: req.body.FacturaId,
 			MetodoPagoId: req.body.MetodoPagoId,
+			UsuarioId: req.usuarioId,
 		});
 		res.json(pagos);
 	} catch (error) {
