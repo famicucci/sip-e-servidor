@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			OrdenEstado.belongsTo(models.Empresa, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 		}
 	}
 	OrdenEstado.init(
@@ -18,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'OrdenEstado',
+			timestamps: false,
 		}
 	);
 	return OrdenEstado;

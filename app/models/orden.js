@@ -49,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Orden',
-			updatedAt: false,
 		}
 	);
 	return Orden;
