@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 	class PtoVenta extends Model {
 		static associate(models) {
 			PtoVenta.belongsTo(models.Empresa, {
-				foreignKey: { name: 'PtoVentaId', allowNull: false },
+				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			PtoVenta.hasMany(models.Orden, {
-				foreignKey: { allowNull: false },
+				foreignKey: { name: 'PtoVentaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
