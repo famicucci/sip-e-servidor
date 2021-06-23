@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 			calle: { type: DataTypes.STRING(30), allowNull: false },
 			numeroCalle: { type: DataTypes.INTEGER, allowNull: false },
 			piso: { type: DataTypes.INTEGER(3) },
-			depto: { type: DataTypes.INTEGER(3) },
+			depto: { type: DataTypes.STRING(10) },
 			barrio: { type: DataTypes.STRING(30), allowNull: false },
 			ciudad: { type: DataTypes.STRING(30), allowNull: false },
 			provincia: { type: DataTypes.STRING(30) },
@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Direccion',
+			timestamps: false,
 		}
 	);
 	return Direccion;
