@@ -10,10 +10,10 @@ module.exports = {
 				nombre: 'Pepa Pets',
 			},
 		];
-		await queryInterface.bulkInsert('empresas', empresas, {});
+		await queryInterface.bulkInsert('empresa', empresas, {});
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('empresas', null, {});
+		await queryInterface.bulkDelete('empresa', null, {});
 	},
 };

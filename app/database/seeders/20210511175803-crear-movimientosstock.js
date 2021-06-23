@@ -69,10 +69,10 @@ module.exports = {
 				createdAt: moment().format(),
 			},
 		];
-		await queryInterface.bulkInsert('movimientostocks', movimientos, {});
+		await queryInterface.bulkInsert('movimientostock', movimientos, {});
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('movimientostocks', null, {});
+		await queryInterface.bulkDelete('movimientostock', null, {});
 	},
 };

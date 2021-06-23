@@ -56,11 +56,11 @@ module.exports = {
 			},
 		];
 
-		await queryInterface.bulkInsert('productos', productos, {});
+		await queryInterface.bulkInsert('producto', productos, {});
 	},
 
 	// se ejecuta cuando se deshace la siembra
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('productos', null, {});
+		await queryInterface.bulkDelete('producto', null, {});
 	},
 };

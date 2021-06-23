@@ -125,10 +125,10 @@ module.exports = {
 				createdAt: moment().format(),
 			},
 		];
-		await queryInterface.bulkInsert('precios', precios, {});
+		await queryInterface.bulkInsert('precio', precios, {});
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('precios', null, {});
+		await queryInterface.bulkDelete('precio', null, {});
 	},
 };

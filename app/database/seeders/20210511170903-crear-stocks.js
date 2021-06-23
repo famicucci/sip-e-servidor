@@ -156,10 +156,10 @@ module.exports = {
 				PtoStockId: 4,
 			},
 		];
-		await queryInterface.bulkInsert('stocks', stocks, {});
+		await queryInterface.bulkInsert('stock', stocks, {});
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('stocks', null, {});
+		await queryInterface.bulkDelete('stock', null, {});
 	},
 };

@@ -29,10 +29,10 @@ module.exports = {
 				createdAt: moment().format(),
 			},
 		];
-		await queryInterface.bulkInsert('listaprecios', precioListas, {});
+		await queryInterface.bulkInsert('listaprecio', precioListas, {});
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.bulkDelete('listaprecios', null, {});
+		await queryInterface.bulkDelete('listaprecio', null, {});
 	},
 };
