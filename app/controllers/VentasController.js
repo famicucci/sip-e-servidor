@@ -1,4 +1,10 @@
-const { Stock, PtoStock, Producto, Precio } = require('../models/index');
+const {
+	Stock,
+	PtoStock,
+	PtoVenta,
+	Producto,
+	Precio,
+} = require('../models/index');
 const { sequelize } = require('../models/index');
 
 // traer stock total y precios
@@ -46,5 +52,19 @@ exports.traerStockPtoStock = async (req, res) => {
 		res.json(stocks);
 	} catch (error) {
 		res.status(500).send({ msg: 'Hubo un error' });
+	}
+};
+
+// traer puntos de venta
+exports.traerPtosVenta = async (req, res) => {
+	try {
+		const stocks = await PtoVenta.findAll({
+			where: { EmpresaId: req.usuarioEmpresaId },
+			include: { model: PtoStock, attributes: ['descripcion'] },
+			raw: true,
+		});
+		res.status(200).json(stocks);
+	} catch (error) {
+		res.json(error);
 	}
 };
