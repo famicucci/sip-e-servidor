@@ -8,5 +8,7 @@
   "20210511182845-crear-preciolista.js",
   "20210511190605-crear-precios.js",
   "20210623143253-crear-tipo-envio.js",
-  "20210623145219-crear-estados-orden.js"
+  "20210623145219-crear-estados-orden.js",
+  "20210623150017-crear-categorias-gasto.js",
+  "20210623150353-crear-subcategorias-gasto.js"
 ]
