@@ -21,7 +21,7 @@ app.use('/api', apiRouter);
 app.listen(PORT, () => {
 	console.log(`La aplicación ha arrancado en el puerto: ${PORT}`);
 
-	sequelize.drop().then(() => {
+	sequelize.sync({ force: true }).then(() => {
 		console.log('Se ha establecido la conexión');
 	});
 });
