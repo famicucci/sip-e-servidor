@@ -7,5 +7,6 @@
   "20210511175803-crear-movimientosstock.js",
   "20210511182845-crear-preciolista.js",
   "20210511190605-crear-precios.js",
-  "20210623143253-crear-tipo-envio.js"
+  "20210623143253-crear-tipo-envio.js",
+  "20210623145219-crear-estados-orden.js"
 ]
