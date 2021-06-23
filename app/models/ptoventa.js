@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 	class PtoVenta extends Model {
 		static associate(models) {
 			PtoVenta.belongsTo(models.Empresa, {
-				foreignKey: { allowNull: false },
+				foreignKey: { name: 'PtoVentaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'CASCADE',
 			});
 			Orden.belongsTo(models.PtoVenta, {
-				foreignKey: { allowNull: false },
+				foreignKey: { name: 'PtoVentaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Orden',
+			tableName: 'ordenes',
 			updatedAt: false,
 		}
 	);
