@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'NO ACTION',
 				onUpdate: 'NO ACTION',
 			});
+			Pago.belongsTo(models.Usuario, {
+				foreignKey: { allowNull: false },
+				onDelete: 'NO ACTION',
+				onUpdate: 'NO ACTION',
+			});
 		}
 	}
 	Pago.init(

@@ -9,18 +9,21 @@ module.exports = {
 				createdAt: moment().format(),
 				FacturaId: 1,
 				MetodoPagoId: 1,
+				UsuarioId: 1,
 			},
 			{
 				importe: 7876,
 				createdAt: moment().format(),
 				FacturaId: 2,
 				MetodoPagoId: 2,
+				UsuarioId: 2,
 			},
 			{
 				importe: 2000,
 				createdAt: moment().format(),
 				FacturaId: 2,
 				MetodoPagoId: 1,
+				UsuarioId: 3,
 			},
 		];
 		await queryInterface.bulkInsert('pago', pagos, {});

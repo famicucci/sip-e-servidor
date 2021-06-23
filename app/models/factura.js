@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			Factura.belongsTo(models.Usuario, {
+				foreignKey: { allowNull: false },
+				onDelete: 'NO ACTION',
+				onUpdate: 'NO ACTION',
+			});
 			Factura.hasMany(models.FacturaDetalle, {
 				foreignKey: { allowNull: false },
 				onDelete: 'CASCADE',

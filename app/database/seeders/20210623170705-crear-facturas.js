@@ -15,6 +15,7 @@ module.exports = {
 				estado: 'v',
 				createdAt: moment().format(),
 				OrdenId: 1,
+				UsuarioId: 1,
 			},
 			{
 				observaciones: 'Otra observación de prueba',
@@ -25,6 +26,7 @@ module.exports = {
 				estado: 'v',
 				createdAt: moment().format(),
 				OrdenId: 2,
+				UsuarioId: 2,
 			},
 			{
 				observaciones: 'Factura anulada por error del cliente',
@@ -34,6 +36,7 @@ module.exports = {
 				tipo: 'nc',
 				estado: 'c',
 				createdAt: moment().format(),
+				UsuarioId: 1,
 			},
 			{
 				observaciones: 'Nota de credito que anula factura, error de cliente',
@@ -42,6 +45,7 @@ module.exports = {
 				tipo: 'nc',
 				estado: 'v',
 				createdAt: moment().format(),
+				UsuarioId: 2,
 			},
 		];
 		await queryInterface.bulkInsert('factura', facturas, {});
