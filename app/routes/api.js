@@ -10,6 +10,7 @@ const apiPreciosRouter = require('./api/precios');
 const apiVentasRouter = require('./api/ventas');
 const apiPagosRouter = require('./api/pagos');
 const apiGastosRouter = require('./api/gastos');
+const apiTiposenvioRouter = require('./api/tiposenvio');
 
 router.use('/usuarios', apiUsuariosRouter);
 router.use('/empresas', middlewares.checkToken, apiEmpresasRouter);
@@ -19,5 +20,6 @@ router.use('/precios', middlewares.checkToken, apiPreciosRouter);
 router.use('/ventas', middlewares.checkToken, apiVentasRouter);
 router.use('/pagos', middlewares.checkToken, apiPagosRouter);
 router.use('/gastos', middlewares.checkToken, apiGastosRouter);
+router.use('/tipos-envio', middlewares.checkToken, apiTiposenvioRouter);
 
 module.exports = router;

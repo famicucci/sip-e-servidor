@@ -114,9 +114,10 @@ exports.eliminarGasto = async (req, res) => {
 				.status(200)
 				.send({ msg: 'El gasto ha sido eliminado!', severity: 'success' });
 		} else {
-			res
-				.status(400)
-				.send({ error: 'No se produjo ningún cambio en la base de datos' });
+			res.status(400).send({
+				msg: 'No se produjo ningún cambio en la base de datos',
+				severity: 'error',
+			});
 		}
 	} catch (error) {
 		res.json(error);

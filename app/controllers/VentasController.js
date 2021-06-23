@@ -4,6 +4,7 @@ const {
 	PtoVenta,
 	Producto,
 	Precio,
+	TipoEnvio,
 } = require('../models/index');
 const { sequelize } = require('../models/index');
 
@@ -58,12 +59,27 @@ exports.traerStockPtoStock = async (req, res) => {
 // traer puntos de venta
 exports.traerPtosVenta = async (req, res) => {
 	try {
-		const stocks = await PtoVenta.findAll({
+		const ptosVenta = await PtoVenta.findAll({
 			where: { EmpresaId: req.usuarioEmpresaId },
 			include: { model: PtoStock, attributes: ['descripcion'] },
 			raw: true,
 		});
-		res.status(200).json(stocks);
+		res.status(200).json(ptosVenta);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+// traer puntos de venta
+exports.traerTiposEnvio = async (req, res) => {
+	try {
+		const tiposEnvio = await TipoEnvio.findAll({
+			attributes: ['id', 'descripcion'],
+			where: { EmpresaId: req.usuarioEmpresaId },
+			// include: { model: PtoStock, attributes: ['descripcion'] },
+			// raw: true,
+		});
+		res.status(200).json(tiposEnvio);
 	} catch (error) {
 		res.json(error);
 	}
