@@ -1,28 +1,29 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class EnvioTipo extends Model {
-		/**
-		 * Helper method for defining associations.
-		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
-		 */
+	class TipoEnvio extends Model {
 		static associate(models) {
-			EnvioTipo.hasMany(models.Orden, {
+			TipoEnvio.belongsTo(models.Empresa, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
+			TipoEnvio.hasMany(models.Orden, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
 		}
 	}
-	EnvioTipo.init(
+	TipoEnvio.init(
 		{
 			descripcion: { type: DataTypes.STRING(30), allowNull: false },
 		},
 		{
 			sequelize,
-			modelName: 'EnvioTipo',
+			modelName: 'TipoEnvio',
+			timestamps: false,
 		}
 	);
-	return EnvioTipo;
+	return TipoEnvio;
 };

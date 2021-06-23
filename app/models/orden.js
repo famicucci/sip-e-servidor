@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
-			Orden.belongsTo(models.EnvioTipo, {
+			Orden.belongsTo(models.TipoEnvio, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
