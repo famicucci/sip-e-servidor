@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'NO ACTION',
 			});
 			Factura.hasMany(models.FacturaDetalle, {
+				as: 'detalleFactura',
 				foreignKey: { allowNull: false },
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
