@@ -1,5 +1,12 @@
-const { Factura, Usuario, Cliente } = require('../models/index');
+const {
+	Factura,
+	Usuario,
+	Cliente,
+	Orden,
+	OrdenEstado,
+} = require('../models/index');
 const { sequelize } = require('../models/index');
+const { Op } = require('sequelize');
 
 exports.crearFactura = async (req, res) => {
 	console.log(req.body.detalleFactura);
@@ -61,13 +68,53 @@ exports.modificarFactura = async (req, res) => {
 	}
 };
 
-exports.traerFacturas = async (req, res) => {
+// traer facturas de ordenes no finalizadas y no canceladas
+exports.traerFacturasOrdenesEnProceso = async (req, res) => {
 	try {
 		const facturas = await Factura.findAll({
 			include: [
 				{ model: Usuario, attributes: ['usuario'] },
 				{ model: Cliente, attributes: ['nombre', 'apellido'] },
+				{
+					model: Orden,
+					attributes: [],
+					include: [
+						{
+							model: OrdenEstado,
+							attributes: ['descripcion'],
+						},
+					],
+					where: { OrdenEstadoId: { [Op.not]: [5, 6] } },
+				},
 			],
+			raw: true,
+		});
+		res.status(200).json(facturas);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+// traer facturas de ordenes finalizadas y canceladas
+exports.traerFacturasOrdenesSuperadas = async (req, res) => {
+	try {
+		const facturas = await Factura.findAll({
+			include: [
+				{ model: Usuario, attributes: ['usuario'] },
+				{ model: Cliente, attributes: ['nombre', 'apellido'] },
+				{
+					model: Orden,
+					attributes: [],
+					include: [
+						{
+							model: OrdenEstado,
+							attributes: ['descripcion'],
+						},
+					],
+					where: { OrdenEstadoId: [5, 6] },
+				},
+			],
+			raw: true,
 		});
 		res.status(200).json(facturas);
 	} catch (error) {
