@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	OrdenDetalle.init(
 		{
-			cantidad: DataTypes.INTEGER,
+			cantidad: { type: DataTypes.INTEGER, allowNull: false },
 			pu: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
 			origen: DataTypes.STRING(15),
 			BacklogProduccionId: { type: DataTypes.INTEGER },

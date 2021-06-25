@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			Orden.hasMany(models.OrdenDetalle, {
+				as: 'detalleOrden',
 				foreignKey: { allowNull: false },
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',

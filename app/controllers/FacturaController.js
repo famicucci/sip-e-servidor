@@ -9,7 +9,6 @@ const { sequelize } = require('../models/index');
 const { Op } = require('sequelize');
 
 exports.crearFactura = async (req, res) => {
-	console.log(req.body.detalleFactura);
 	// rollback
 	const t = await sequelize.transaction();
 
@@ -37,6 +36,7 @@ exports.crearFactura = async (req, res) => {
 		await t.commit();
 		res.status(200).json(factura);
 	} catch (error) {
+		await t.rollback();
 		res.json(error);
 	}
 };
