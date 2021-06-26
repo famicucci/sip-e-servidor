@@ -2,7 +2,36 @@ const { OrdenDetalle, Stock, MovimientoStock } = require('../models/index');
 const { sequelize } = require('../models/index');
 
 // traer stock total y precios
-exports.crearDetalleOrden = async (req, res) => {
+exports.modificarDetalleOrden = async (req, res) => {
+	// consultar el detalle
+	const detalle = await OrdenDetalle.findAll({
+		where: { OrdenId: req.params.OrdenId },
+	});
+
+	// borrar todo el detalle de la orden (productos)
+	await OrdenDetalle.destroy({
+		where: { OrdenId: req.params.OrdenId },
+	});
+
+	// // recuperar todo al stock
+	for (let i = 0; i < detalle.length; i++) {
+		const element = detalle[i];
+
+		await Stock.increment(
+			{ cantidad: element.cantidad },
+			{
+				// transaction: t,
+				where: {
+					ProductoCodigo: element.ProductoCodigo,
+					PtoStockId: element.PtoStockId,
+				},
+			}
+		);
+	}
+
+	res.json(detalle);
+	return;
+
 	// verificar que los productos tengan stock
 	// traer todos los stocks de productos
 	const stocks = await Stock.findAll({
@@ -108,3 +137,20 @@ exports.crearDetalleOrden = async (req, res) => {
 		res.json(error);
 	}
 };
+
+// [{
+//     "cantidad": 2,
+//     "pu": 5642,
+//     "origen": "PtoStock",
+//     "OrdenId": 2,
+//     "ProductoCodigo": "PJ100027LM",
+//     "PtoStockId": 2
+// },
+// {
+//     "cantidad": 2,
+//     "pu": 5642,
+//     "origen": "PtoStock",
+//     "OrdenId": 2,
+//     "ProductoCodigo": "PJ100022LM",
+//     "PtoStockId": 2
+// }]
