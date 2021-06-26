@@ -1,4 +1,4 @@
-const { Orden, Stock, MovimientoStock } = require('../models/index');
+const { Orden, Stock, MovimientoStock, Factura } = require('../models/index');
 const { Op } = require('sequelize');
 const { sequelize } = require('../models/index');
 
@@ -182,5 +182,78 @@ exports.traerOrdenes = async (req, res) => {
 		res.status(200).json(ordenes);
 	} catch (error) {
 		res.json(error);
+	}
+};
+
+exports.modificarOrden = async (req, res) => {
+	// puedo modificar observaciones, ptoVenta, tipoEnvio y direccion sin restricciones
+	// puedo modifiar envio si no hay factura vigente
+	if (req.body.tarifaEnvio) {
+		try {
+			const facturasOrden = await Orden.findOne({
+				attributes: [],
+				include: {
+					model: Factura,
+					attributes: ['id', 'estado'],
+					where: { estado: 'v' },
+				},
+				where: { id: req.params.Id },
+			});
+
+			if (facturasOrden) {
+				res.json({
+					msg: 'El costo de envío no puede ser modificado porque la orden tiene una factura vigente',
+					severity: 'warning',
+				});
+				return;
+			} else {
+				try {
+					await Orden.update(
+						{
+							observaciones: req.body.observaciones,
+							direccionEnvio: req.body.direccionEnvio,
+							tipoEnvioId: req.body.tipoEnvioId,
+							PtoVentaId: req.body.PtoVentaId,
+							tarifaEnvio: req.body.tarifaEnvio,
+						},
+						{
+							where: {
+								id: req.params.Id,
+							},
+						}
+					);
+
+					res
+						.status(200)
+						.send({ msg: 'La orden ha sido modificada!', severity: 'success' });
+				} catch (error) {
+					res.json(error);
+				}
+			}
+		} catch (error) {
+			res.json(error);
+		}
+	} else {
+		try {
+			await Orden.update(
+				{
+					observaciones: req.body.observaciones,
+					direccionEnvio: req.body.direccionEnvio,
+					tipoEnvioId: req.body.tipoEnvioId,
+					PtoVentaId: req.body.PtoVentaId,
+				},
+				{
+					where: {
+						id: req.params.Id,
+					},
+				}
+			);
+
+			res
+				.status(200)
+				.send({ msg: 'La orden ha sido modificada!', severity: 'success' });
+		} catch (error) {
+			res.status(400).send({ msg: 'Hubo un error!', severity: 'error' });
+		}
 	}
 };
