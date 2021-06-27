@@ -1,29 +1,50 @@
-const { OrdenDetalle, Stock, MovimientoStock } = require('../models/index');
+const {
+	OrdenDetalle,
+	Stock,
+	MovimientoStock,
+	Orden,
+	Factura,
+} = require('../models/index');
 const { sequelize } = require('../models/index');
 
 // traer stock total y precios
 exports.modificarDetalleOrden = async (req, res) => {
-	// crear los productos en el detalle
-	// crear los movimientos de stock correspondientes
-
-	// aqui comienzan los creates
-	// variables que necesito que me devuelva el control de stock: cantsFinales, detalleOrden
 	const t = await sequelize.transaction();
 	try {
-		// consultar el detalle
-		const detalle = await OrdenDetalle.findAll({
-			where: { OrdenId: req.params.OrdenId },
-			transaction: t,
+		const facturasOrden = await Orden.findOne({
+			attributes: [],
+			include: {
+				model: Factura,
+				attributes: ['id', 'estado'],
+				where: { estado: 'v' },
+			},
+			where: { id: req.params.OrdenId },
 		});
 
-		// borrar todo el detalle de la orden (productos)
+		if (facturasOrden) {
+			await t.rollback();
+			res.json({
+				msg: 'El detalle de la orden no puede ser modificado porque la orden tiene una factura vigente',
+				severity: 'warning',
+			});
+			return;
+		}
+
+		// trae el detalle actual
+		const detalleActual = await OrdenDetalle.findAll({
+			where: { OrdenId: req.params.OrdenId },
+			raw: true,
+		});
+
+		// borrar el detalle actual
 		await OrdenDetalle.destroy({
 			where: { OrdenId: req.params.OrdenId },
 			transaction: t,
 		});
 
-		for (let i = 0; i < detalle.length; i++) {
-			const element = detalle[i];
+		// incrementa el stock según detalle actual
+		for (let i = 0; i < detalleActual.length; i++) {
+			const element = detalleActual[i];
 
 			await Stock.increment(
 				{ cantidad: element.cantidad },
@@ -44,7 +65,6 @@ exports.modificarDetalleOrden = async (req, res) => {
 		});
 
 		let prodsSinStock = [];
-		let cantsFinales = [];
 		let detalleOrden = req.body;
 		for (let k = 0; k < detalleOrden.length; k++) {
 			const element = detalleOrden[k];
@@ -59,6 +79,7 @@ exports.modificarDetalleOrden = async (req, res) => {
 			if (prodStock) {
 				cantProdStock = prodStock.cantidad;
 			} else {
+				await t.rollback();
 				res.json({
 					msg: `El producto ${element.ProductoCodigo} o su punto de stock no se encuentran en la base de datos`,
 					severity: 'error',
@@ -66,33 +87,36 @@ exports.modificarDetalleOrden = async (req, res) => {
 				return;
 			}
 
+			// si el producto ya esta en el carrito tengo que sumar al stock las cantidades de detalleActual
+			const prodDetalleActual = detalleActual.find(
+				(x) =>
+					x.ProductoCodigo === element.ProductoCodigo &&
+					x.PtoStockId === element.PtoStockId
+			);
+
+			if (prodDetalleActual) {
+				cantProdStock = cantProdStock + prodDetalleActual.cantidad;
+			}
 			const cantfinal = cantProdStock - cantProdCarr;
 
-			// comparar cantidades con los productos del carrito para ver si estan disponibles
 			if (cantfinal < 0) {
 				prodsSinStock.push(element.ProductoCodigo);
-			} else {
-				cantsFinales.push({
-					ProductoCodigo: element.ProductoCodigo,
-					cantFinal: cantfinal,
-					PtoStockId: element.PtoStockId,
-				});
 			}
 		}
 
+		// si hay productos en el detalle modificado que no tienen stock, los elimina de dicho detalle
 		if (prodsSinStock.length > 0) {
-			// borrarlo del detalle de la orden
 			for (let j = 0; j < prodsSinStock.length; j++) {
 				const element = prodsSinStock[j];
 				detalleOrden = detalleOrden.filter((x) => x.ProductoCodigo !== element);
 			}
 		}
 
-		for (let i = 0; i < cantsFinales.length; i++) {
-			const element = cantsFinales[i];
+		for (let i = 0; i < detalleOrden.length; i++) {
+			const element = detalleOrden[i];
 
-			await Stock.update(
-				{ cantidad: element.cantFinal },
+			await Stock.decrement(
+				{ cantidad: element.cantidad },
 				{
 					transaction: t,
 					where: {
@@ -103,63 +127,106 @@ exports.modificarDetalleOrden = async (req, res) => {
 			);
 		}
 
-		res.json(cantsFinales);
-		await t.commit();
-		return;
-
 		// debe crear el los registros con el OrdenId que viene en el params
 		detalleOrden = detalleOrden.map((x) => ({
 			...x,
 			OrdenId: req.params.OrdenId,
 		}));
 
-		const ordenDetalle = await OrdenDetalle.bulkCreate(detalleOrden, {
+		// crea el nuevo detalle
+		await OrdenDetalle.bulkCreate(detalleOrden, {
 			transaction: t,
 		});
 
-		// crear los movimientos de stock
-		for (let k = 0; k < detalleOrden.length; k++) {
-			const element = detalleOrden[k];
-			const cantProdCarr = element.cantidad;
+		// crea los movimientos de stock
+		const detalleOrdenMod = detalleOrden.map((x) => ({
+			...x,
+			cantidad: -x.cantidad,
+		}));
+
+		// concateno los dos array
+		let mergeArray = detalleActual.concat(detalleOrdenMod);
+
+		// elimino atributos innecesarios, para luego poder eliminar duplicados
+		mergeArray = mergeArray.map((x) => ({
+			cantidad: x.cantidad,
+			ProductoCodigo: x.ProductoCodigo,
+			PtoStockId: x.PtoStockId,
+		}));
+
+		let nuevoArray = [];
+		for (let i = 0; i < mergeArray.length; i++) {
+			const element = mergeArray[i];
+			const ProductoCodigo = element.ProductoCodigo;
+			const PtoStockId = element.PtoStockId;
+
+			let r = mergeArray.filter(
+				(x) =>
+					x.ProductoCodigo === ProductoCodigo && x.PtoStockId === PtoStockId
+			);
+
+			const cants = r.map((x) => x.cantidad);
+			const suma = cants.reduce((acc, el) => acc + el, 0);
+
+			r = r.map((x) => ({ ...x, cantidad: suma }));
+
+			nuevoArray.push(r);
+		}
+
+		nuevoArray = nuevoArray.flat();
+
+		let set = new Set(nuevoArray.map(JSON.stringify));
+		let arrayMovStock = Array.from(set).map(JSON.parse);
+
+		// si hay productos sin stock los saco del array movimientos
+		if (prodsSinStock.length > 0) {
+			for (let j = 0; j < prodsSinStock.length; j++) {
+				const element = prodsSinStock[j];
+				arrayMovStock = arrayMovStock.filter(
+					(x) => x.ProductoCodigo !== element
+				);
+			}
+		}
+
+		// crear los movimientos de stock según el detalle modificado
+		for (let k = 0; k < arrayMovStock.length; k++) {
+			const element = arrayMovStock[k];
+			const cant = element.cantidad;
 			const cod = element.ProductoCodigo;
 			const ptoStockId = element.PtoStockId;
 
-			await MovimientoStock.create(
-				{
-					cantidad: cantProdCarr,
-					motivo: 'venta',
-					ProductoCodigo: cod,
-					PtoStockId: ptoStockId,
-					UsuarioId: req.usuarioId,
-				},
-				{
-					transaction: t,
-				}
-			);
+			if (cant !== 0) {
+				await MovimientoStock.create(
+					{
+						cantidad: cant,
+						motivo: 'venta',
+						ProductoCodigo: cod,
+						PtoStockId: ptoStockId,
+						UsuarioId: req.usuarioId,
+					},
+					{
+						transaction: t,
+					}
+				);
+			}
 		}
-		// El stock no está descontando bien!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// devolver un mensaje si elimina un producto del carritooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+		// solucionar el registro de movimientos de stock (ahora solo registra los del detalle modificado)
 		await t.commit();
-		res.status(200).json(ordenDetalle);
+
+		if (prodsSinStock.length > 0) {
+			res.json({
+				detalleOrden: detalleOrden,
+				msg: `Hubo un error con los productos ${prodsSinStock.map(
+					(x) => `${x} `
+				)}, fueron eliminados del carrito por no contar con unidades suficientes`,
+				severity: 'warning',
+			});
+		} else {
+			res.json({ detalleOrden });
+		}
 	} catch (error) {
 		await t.rollback();
 		res.json(error);
 	}
 };
-
-// [{
-//     "cantidad": 2,
-//     "pu": 5642,
-//     "origen": "PtoStock",
-//     "OrdenId": 2,
-//     "ProductoCodigo": "PJ100027LM",
-//     "PtoStockId": 2
-// },
-// {
-//     "cantidad": 2,
-//     "pu": 5642,
-//     "origen": "PtoStock",
-//     "OrdenId": 2,
-//     "ProductoCodigo": "PJ100022LM",
-//     "PtoStockId": 2
-// }]
