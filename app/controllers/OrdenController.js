@@ -1,4 +1,16 @@
-const { Orden, Stock, MovimientoStock, Factura } = require('../models/index');
+const {
+	Orden,
+	OrdenDetalle,
+	Stock,
+	PtoStock,
+	MovimientoStock,
+	Factura,
+	FacturaDetalle,
+	Cliente,
+	Pago,
+	MetodoPago,
+	Usuario,
+} = require('../models/index');
 const { Op } = require('sequelize');
 const { sequelize } = require('../models/index');
 
@@ -171,6 +183,7 @@ exports.traerOrdenes = async (req, res) => {
 				},
 				{
 					model: OrdenDetalle,
+					as: 'detalleOrden',
 					attributes: {
 						exclude: ['OrdenId', 'PtoStockId'],
 					},
@@ -178,6 +191,60 @@ exports.traerOrdenes = async (req, res) => {
 				},
 			],
 			where: { OrdenEstadoId: { [Op.not]: [5, 6] } },
+		});
+		res.status(200).json(ordenes);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+exports.traerOrden = async (req, res) => {
+	try {
+		const ordenes = await Orden.findOne({
+			attributes: { exclude: ['ClienteId', 'UsuarioId'] },
+			include: [
+				{
+					model: Factura,
+					attributes: {
+						exclude: ['OrdenId', 'UsuarioId', 'tipo', 'estado', 'ClienteId'],
+					},
+					include: [
+						{
+							model: Cliente,
+							attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+						},
+						{
+							model: FacturaDetalle,
+							as: 'detalleFactura',
+							attributes: { exclude: ['FacturaId'] },
+						},
+						{
+							model: Pago,
+							attributes: {
+								exclude: ['FacturaId', 'UsuarioId', 'MetodoPagoId'],
+							},
+							include: { model: MetodoPago, attributes: ['id', 'descripcion'] },
+						},
+					],
+				},
+				{
+					model: Cliente,
+					attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+				},
+				{
+					model: Usuario,
+					attributes: ['usuario'],
+				},
+				{
+					model: OrdenDetalle,
+					as: 'detalleOrden',
+					attributes: {
+						exclude: ['OrdenId', 'PtoStockId'],
+					},
+					include: { model: PtoStock, attributes: ['id', 'descripcion'] },
+				},
+			],
+			where: { id: req.params.Id },
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {
