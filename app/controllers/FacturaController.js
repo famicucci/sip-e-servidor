@@ -1,5 +1,6 @@
 const {
 	Factura,
+	FacturaDetalle,
 	Usuario,
 	Cliente,
 	Orden,
@@ -92,3 +93,41 @@ exports.traerFacturas = async (req, res) => {
 		res.json(error);
 	}
 };
+
+exports.traerFactura = async (req, res) => {
+	try {
+		const facturas = await Factura.findOne({
+			attributes: { exclude: ['ClienteId', 'UsuarioId'] },
+			include: [
+				{ model: Cliente, attributes: ['id', 'nombre', 'apellido'] },
+				{ model: Usuario, attributes: ['usuario'] },
+				{
+					model: FacturaDetalle,
+					as: 'detalleFactura',
+					attributes: { exclude: ['FacturaId'] },
+				},
+			],
+			where: { id: req.params.Id },
+		});
+		res.status(200).json(facturas);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+// {
+// 	include: [
+// 		{ model: Usuario, attributes: ['usuario'] },
+// 		{ model: Cliente, attributes: ['nombre', 'apellido'] },
+// 		{
+// 			model: Orden,
+// 			attributes: [],
+// 			include: [
+// 				{
+// 					model: OrdenEstado,
+// 					attributes: ['descripcion'],
+// 				},
+// 			],
+// 		},
+// 	],
+// }
