@@ -257,3 +257,42 @@ exports.modificarOrden = async (req, res) => {
 		}
 	}
 };
+
+exports.eliminarOrden = async (req, res) => {
+	try {
+		const facturasOrden = await Orden.findOne({
+			attributes: [],
+			include: {
+				model: Factura,
+				attributes: ['id', 'estado'],
+				where: { estado: 'v' },
+			},
+			where: { id: req.params.Id },
+		});
+
+		if (facturasOrden) {
+			res.json({
+				msg: 'La orden no puede ser eliminada porque tiene una factura vigente',
+				severity: 'error',
+			});
+			return;
+		} else {
+			try {
+				await Orden.destroy({
+					where: {
+						id: req.params.Id,
+					},
+				});
+
+				res
+					.status(200)
+					.send({ msg: 'La orden ha sido eliminada!', severity: 'success' });
+			} catch (error) {
+				res.json(error);
+				res.status(200).send({ msg: 'Hubo un error!', severity: 'error' });
+			}
+		}
+	} catch (error) {
+		res.status(200).send({ msg: 'Hubo un error!', severity: 'error' });
+	}
+};
