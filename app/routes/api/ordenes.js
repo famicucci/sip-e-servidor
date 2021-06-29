@@ -4,6 +4,7 @@ const OrdenController = require('../../controllers/OrdenController');
 
 router.get('/', OrdenController.traerOrdenes);
 router.get('/:Id', OrdenController.traerOrden);
+router.get('/cliente/:IdCliente', OrdenController.traerOrdenesCliente);
 router.post('/', OrdenController.crearOrden);
 router.put('/:Id', OrdenController.modificarOrden);
 router.delete('/:Id', OrdenController.eliminarOrden);

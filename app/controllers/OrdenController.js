@@ -10,6 +10,7 @@ const {
 	Pago,
 	MetodoPago,
 	Usuario,
+	TipoEnvio,
 } = require('../models/index');
 const { Op } = require('sequelize');
 const { sequelize } = require('../models/index');
@@ -245,6 +246,40 @@ exports.traerOrden = async (req, res) => {
 				},
 			],
 			where: { id: req.params.Id },
+		});
+		res.status(200).json(ordenes);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+exports.traerOrdenesCliente = async (req, res) => {
+	try {
+		const ordenes = await Orden.findAll({
+			attributes: { exclude: ['ClienteId', 'UsuarioId', 'TipoEnvioId'] },
+			include: [
+				{
+					model: Factura,
+					attributes: ['id'],
+				},
+				{
+					model: Usuario,
+					attributes: ['usuario'],
+				},
+				{
+					model: TipoEnvio,
+					attributes: ['id', 'descripcion'],
+				},
+				{
+					model: OrdenDetalle,
+					as: 'detalleOrden',
+					attributes: {
+						exclude: ['OrdenId', 'PtoStockId'],
+					},
+					include: { model: PtoStock, attributes: ['id', 'descripcion'] },
+				},
+			],
+			where: { ClienteId: req.params.IdCliente },
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {
