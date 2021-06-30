@@ -114,20 +114,3 @@ exports.traerFactura = async (req, res) => {
 		res.json(error);
 	}
 };
-
-// {
-// 	include: [
-// 		{ model: Usuario, attributes: ['usuario'] },
-// 		{ model: Cliente, attributes: ['nombre', 'apellido'] },
-// 		{
-// 			model: Orden,
-// 			attributes: [],
-// 			include: [
-// 				{
-// 					model: OrdenEstado,
-// 					attributes: ['descripcion'],
-// 				},
-// 			],
-// 		},
-// 	],
-// }

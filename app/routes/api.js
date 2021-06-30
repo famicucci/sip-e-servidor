@@ -15,6 +15,7 @@ const apiClientesRouter = require('./api/clientes');
 const apiFacturasRouter = require('./api/facturas');
 const apiOrdenesRouter = require('./api/ordenes');
 const apiDetallesOrdenRouter = require('./api/detallesorden');
+const apiInformesRouter = require('./api/informes');
 
 router.use('/usuarios', apiUsuariosRouter);
 router.use('/empresas', middlewares.checkToken, apiEmpresasRouter);
@@ -29,5 +30,6 @@ router.use('/clientes', middlewares.checkToken, apiClientesRouter);
 router.use('/facturas', middlewares.checkToken, apiFacturasRouter);
 router.use('/ordenes', middlewares.checkToken, apiOrdenesRouter);
 router.use('/detalles-orden', middlewares.checkToken, apiDetallesOrdenRouter);
+router.use('/informes', middlewares.checkToken, apiInformesRouter);
 
 module.exports = router;
