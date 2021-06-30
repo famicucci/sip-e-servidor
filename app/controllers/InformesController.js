@@ -1,6 +1,12 @@
-const { Pago, Gasto } = require('../models/index');
+const {
+	Pago,
+	Gasto,
+	Factura,
+	FacturaDetalle,
+	Producto,
+} = require('../models/index');
 const { sequelize } = require('../models/index');
-const { Op } = require('sequelize');
+const { Op, literal } = require('sequelize');
 const moment = require('moment');
 
 exports.traerIngresosBrutos = async (req, res) => {
@@ -70,6 +76,48 @@ exports.traerGastos = async (req, res) => {
 		} else {
 			res.status(200).json('0');
 		}
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+// traer los productos con mayor facturación y la cantidad que se vendieron
+exports.traerProductosVendidos = async (req, res) => {
+	const startDate = moment(req.body.startDate).subtract({
+		hours: 3,
+	});
+	const endDate = moment(req.body.endDate).add({
+		hours: 21,
+	});
+
+	let whereClausula = {
+		createdAt: {
+			[Op.between]: [startDate, endDate],
+		},
+		estado: 'v',
+	};
+
+	try {
+		const productos = await FacturaDetalle.findAll({
+			attributes: [
+				'ProductoCodigo',
+				[sequelize.fn('sum', sequelize.col('cantidad')), 'cantidad'],
+				[sequelize.literal('SUM(cantidad * pu)'), 'totalFacturado'],
+			],
+
+			include: [
+				{ model: Producto, attributes: ['descripcion'] },
+				{
+					model: Factura,
+					attributes: ['createdAt'],
+					where: whereClausula,
+				},
+			],
+			group: ['ProductoCodigo'],
+			raw: true,
+		});
+
+		res.status(200).json(productos);
 	} catch (error) {
 		res.json(error);
 	}
