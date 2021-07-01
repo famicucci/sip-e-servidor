@@ -81,7 +81,6 @@ exports.eliminarPrecio = async (req, res) => {
 exports.traerListasPrecio = async (req, res) => {
 	try {
 		const precios = await ListaPrecio.findAll({
-			attributes: ['id', 'descripcion', 'estado', 'createdAt', 'updatedAt'],
 			where: { EmpresaId: req.usuarioEmpresaId },
 		});
 
