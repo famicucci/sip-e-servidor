@@ -1,12 +1,4 @@
-const {
-	Stock,
-	PtoStock,
-	PtoVenta,
-	Producto,
-	Precio,
-	TipoEnvio,
-	Cliente,
-} = require('../models/index');
+const { Cliente, Direccion } = require('../models/index');
 
 exports.crearCliente = async (req, res) => {
 	try {
@@ -86,6 +78,11 @@ exports.traerClientes = async (req, res) => {
 				'createdAt',
 				'updatedAt',
 			],
+			include: {
+				model: Direccion,
+				as: 'direcciones',
+				attributes: { exclude: ['ClienteId'] },
+			},
 		});
 
 		res.json(clientes);

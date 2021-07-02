@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			Cliente.hasMany(models.Direccion, {
+				as: 'direcciones',
 				foreignKey: { allowNull: false },
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
