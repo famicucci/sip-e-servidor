@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'NO ACTION',
 			});
 			OrdenDetalle.belongsTo(models.PtoStock, {
-				foreignKey: { allowNull: false },
 				onDelete: 'NO ACTION',
 				onUpdate: 'NO ACTION',
 			});

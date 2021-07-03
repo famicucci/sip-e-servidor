@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			PtoStock.hasMany(models.OrdenDetalle, {
-				foreignKey: { allowNull: false },
 				onDelete: 'NO ACTION',
 				onUpdate: 'NO ACTION',
 			});

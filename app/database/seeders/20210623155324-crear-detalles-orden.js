@@ -6,7 +6,7 @@ module.exports = {
 			{
 				cantidad: 2,
 				pu: 2345,
-				origen: 1,
+				origen: 'Disponible',
 				OrdenId: 1,
 				ProductoCodigo: 'PJ100027LM',
 				PtoStockId: 1,
@@ -14,7 +14,7 @@ module.exports = {
 			{
 				cantidad: 6,
 				pu: 9876,
-				origen: 2,
+				origen: 'Disponible',
 				OrdenId: 1,
 				ProductoCodigo: 'CTC100099SN',
 				PtoStockId: 2,
@@ -22,7 +22,7 @@ module.exports = {
 			{
 				cantidad: 4,
 				pu: 5676,
-				origen: 3,
+				origen: 'Disponible',
 				OrdenId: 2,
 				ProductoCodigo: 'RDA100110MG',
 				PtoStockId: 3,
