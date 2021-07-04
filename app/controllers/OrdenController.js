@@ -24,37 +24,45 @@ exports.crearOrden = async (req, res) => {
 	let prodsSinStock = [];
 	let cantsFinales = [];
 	let detalleOrden = req.body.detalleOrden;
+
+	// verifico que detalle orden no tenga un producto en cero, si lo tiene lo elimino
+	detalleOrden = detalleOrden.filter((x) => x.cantidad !== 0);
+
 	for (let k = 0; k < detalleOrden.length; k++) {
 		const element = detalleOrden[k];
 		const cantProdCarr = element.cantidad;
-		const prodStock = stocks.find(
-			(x) =>
-				x.ProductoCodigo === element.ProductoCodigo &&
-				x.PtoStockId === element.PtoStockId
-		);
 
-		let cantProdStock;
-		if (prodStock) {
-			cantProdStock = prodStock.cantidad;
-		} else {
-			res.json({
-				msg: `El producto ${element.ProductoCodigo} o su punto de stock no se encuentran en la base de datos`,
-				severity: 'error',
-			});
-			return;
-		}
+		// esto lo tiene que hacer si el producto esta disponible
+		if (element.PtoStockId !== null) {
+			const prodStock = stocks.find(
+				(x) =>
+					x.ProductoCodigo === element.ProductoCodigo &&
+					x.PtoStockId === element.PtoStockId
+			);
 
-		const cantfinal = cantProdStock - cantProdCarr;
+			let cantProdStock;
+			if (prodStock) {
+				cantProdStock = prodStock.cantidad;
+			} else {
+				res.json({
+					msg: `El producto ${element.ProductoCodigo} o su punto de stock no se encuentran en la base de datos`,
+					severity: 'error',
+				});
+				return;
+			}
 
-		// comparar cantidades con los productos del carrito para ver si estan disponibles
-		if (cantfinal < 0) {
-			prodsSinStock.push(element.ProductoCodigo);
-		} else {
-			cantsFinales.push({
-				ProductoCodigo: element.ProductoCodigo,
-				cantFinal: cantfinal,
-				PtoStockId: element.PtoStockId,
-			});
+			const cantfinal = cantProdStock - cantProdCarr;
+
+			// comparar cantidades con los productos del carrito para ver si estan disponibles
+			if (cantfinal < 0) {
+				prodsSinStock.push(element.ProductoCodigo);
+			} else {
+				cantsFinales.push({
+					ProductoCodigo: element.ProductoCodigo,
+					cantFinal: cantfinal,
+					PtoStockId: element.PtoStockId,
+				});
+			}
 		}
 	}
 
@@ -112,18 +120,20 @@ exports.crearOrden = async (req, res) => {
 			const cod = element.ProductoCodigo;
 			const ptoStockId = element.PtoStockId;
 
-			await MovimientoStock.create(
-				{
-					cantidad: cantProdCarr,
-					motivo: 'venta',
-					ProductoCodigo: cod,
-					PtoStockId: ptoStockId,
-					UsuarioId: req.usuarioId,
-				},
-				{
-					transaction: t,
-				}
-			);
+			if (ptoStockId !== null) {
+				await MovimientoStock.create(
+					{
+						cantidad: cantProdCarr,
+						motivo: 'venta',
+						ProductoCodigo: cod,
+						PtoStockId: ptoStockId,
+						UsuarioId: req.usuarioId,
+					},
+					{
+						transaction: t,
+					}
+				);
+			}
 		}
 
 		await t.commit();
