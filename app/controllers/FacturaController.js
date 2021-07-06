@@ -94,6 +94,18 @@ exports.traerFacturas = async (req, res) => {
 	}
 };
 
+// traer facturas de ordenes no finalizadas y no canceladas
+exports.traerFacturasCliente = async (req, res) => {
+	try {
+		const facturas = await Factura.findAll({
+			where: { ClienteId: req.params.Id },
+		});
+		res.status(200).json(facturas);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
 exports.traerFactura = async (req, res) => {
 	try {
 		const facturas = await Factura.findOne({
