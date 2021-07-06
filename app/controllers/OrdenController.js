@@ -4,6 +4,7 @@ const {
 	OrdenEstado,
 	Stock,
 	PtoStock,
+	PtoVenta,
 	MovimientoStock,
 	Factura,
 	FacturaDetalle,
@@ -159,7 +160,15 @@ exports.crearOrden = async (req, res) => {
 exports.traerOrdenes = async (req, res) => {
 	try {
 		const ordenes = await Orden.findAll({
-			attributes: { exclude: ['ClienteId', 'UsuarioId'] },
+			attributes: {
+				exclude: [
+					'ClienteId',
+					'UsuarioId',
+					'TipoEnvioId',
+					'PtoVentaId',
+					'OrdenEstadoId',
+				],
+			},
 			include: [
 				{
 					model: Factura,
@@ -200,6 +209,19 @@ exports.traerOrdenes = async (req, res) => {
 						exclude: ['OrdenId', 'PtoStockId'],
 					},
 					include: { model: PtoStock, attributes: ['id', 'descripcion'] },
+				},
+				{
+					model: TipoEnvio,
+					attributes: ['id', 'descripcion'],
+				},
+				{
+					model: PtoVenta,
+					as: 'PtoVenta',
+					attributes: ['id', 'descripcion'],
+				},
+				{
+					model: OrdenEstado,
+					attributes: ['id', 'descripcion'],
 				},
 			],
 			where: { OrdenEstadoId: { [Op.not]: [5, 6] } },
@@ -268,7 +290,13 @@ exports.traerOrdenesCliente = async (req, res) => {
 	try {
 		const ordenes = await Orden.findAll({
 			attributes: {
-				exclude: ['ClienteId', 'UsuarioId', 'TipoEnvioId', 'OrdenEstadoId'],
+				exclude: [
+					'ClienteId',
+					'UsuarioId',
+					'TipoEnvioId',
+					'OrdenEstadoId',
+					'PtoVentaId',
+				],
 			},
 			include: [
 				{
@@ -278,6 +306,11 @@ exports.traerOrdenesCliente = async (req, res) => {
 				{
 					model: Usuario,
 					attributes: ['usuario'],
+				},
+				{
+					model: PtoVenta,
+					as: 'PtoVenta',
+					attributes: ['id', 'descripcion'],
 				},
 				{
 					model: TipoEnvio,

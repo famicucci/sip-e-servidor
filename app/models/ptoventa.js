@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			PtoVenta.hasMany(models.Orden, {
+				as: 'PtoVenta',
 				foreignKey: { name: 'PtoVentaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
