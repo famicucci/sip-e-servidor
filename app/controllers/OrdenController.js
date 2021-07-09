@@ -340,6 +340,7 @@ exports.traerOrdenesCliente = async (req, res) => {
 exports.modificarOrden = async (req, res) => {
 	// puedo modificar observaciones, ptoVenta, tipoEnvio y direccion sin restricciones
 	// puedo modifiar envio si no hay factura vigente
+	console.log(req.body.OrdenEstadoId);
 	if (req.body.tarifaEnvio) {
 		try {
 			const facturasOrden = await Orden.findOne({
@@ -367,6 +368,7 @@ exports.modificarOrden = async (req, res) => {
 							tipoEnvioId: req.body.tipoEnvioId,
 							PtoVentaId: req.body.PtoVentaId,
 							tarifaEnvio: req.body.tarifaEnvio,
+							OrdenEstadoId: req.body.OrdenEstadoId,
 						},
 						{
 							where: {
@@ -375,6 +377,7 @@ exports.modificarOrden = async (req, res) => {
 						}
 					);
 
+					// res.json({ modificacion });
 					res
 						.status(200)
 						.send({ msg: 'La orden ha sido modificada!', severity: 'success' });
@@ -393,6 +396,7 @@ exports.modificarOrden = async (req, res) => {
 					direccionEnvio: req.body.direccionEnvio,
 					tipoEnvioId: req.body.tipoEnvioId,
 					PtoVentaId: req.body.PtoVentaId,
+					OrdenEstadoId: req.body.OrdenEstadoId,
 				},
 				{
 					where: {
