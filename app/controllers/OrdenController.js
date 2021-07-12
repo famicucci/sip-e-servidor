@@ -13,6 +13,7 @@ const {
 	MetodoPago,
 	Usuario,
 	TipoEnvio,
+	Producto,
 } = require('../models/index');
 const { Op } = require('sequelize');
 const { sequelize } = require('../models/index');
@@ -184,6 +185,12 @@ exports.traerOrdenes = async (req, res) => {
 							model: FacturaDetalle,
 							as: 'detalleFactura',
 							attributes: { exclude: ['FacturaId'] },
+							include: [
+								{
+									model: Producto,
+									attributes: ['descripcion'],
+								},
+							],
 						},
 						{
 							model: Pago,
@@ -208,7 +215,13 @@ exports.traerOrdenes = async (req, res) => {
 					attributes: {
 						exclude: ['OrdenId', 'PtoStockId'],
 					},
-					include: { model: PtoStock, attributes: ['id', 'descripcion'] },
+					include: [
+						{ model: PtoStock, attributes: ['id', 'descripcion'] },
+						{
+							model: Producto,
+							attributes: ['descripcion'],
+						},
+					],
 				},
 				{
 					model: TipoEnvio,
