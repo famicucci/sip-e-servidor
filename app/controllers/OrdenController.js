@@ -14,6 +14,7 @@ const {
 	Usuario,
 	TipoEnvio,
 	Producto,
+	Direccion,
 } = require('../models/index');
 const { Op } = require('sequelize');
 const { sequelize } = require('../models/index');
@@ -204,6 +205,7 @@ exports.traerOrdenes = async (req, res) => {
 				{
 					model: Cliente,
 					attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+					include: { model: Direccion, as: 'direcciones' },
 				},
 				{
 					model: Usuario,
