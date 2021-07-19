@@ -5,6 +5,8 @@ const {
 	Cliente,
 	Orden,
 	OrdenEstado,
+	Pago,
+	MetodoPago,
 } = require('../models/index');
 const { sequelize } = require('../models/index');
 const { Op } = require('sequelize');
@@ -117,6 +119,14 @@ exports.traerFactura = async (req, res) => {
 					model: FacturaDetalle,
 					as: 'detalleFactura',
 					attributes: { exclude: ['FacturaId'] },
+				},
+				{
+					model: Pago,
+					attributes: { exclude: ['FacturaId'] },
+					include: {
+						model: MetodoPago,
+						attributes: { exclude: ['EmpresaId'] },
+					},
 				},
 			],
 			where: { id: req.params.Id },

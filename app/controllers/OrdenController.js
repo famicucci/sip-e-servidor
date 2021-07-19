@@ -353,79 +353,68 @@ exports.traerOrdenesCliente = async (req, res) => {
 };
 
 exports.modificarOrden = async (req, res) => {
-	// puedo modificar observaciones, ptoVenta, tipoEnvio y direccion sin restricciones
-	// puedo modifiar envio si no hay factura vigente
+	// si viene tarifaEnvio debo verificar que la orden no tenga una factura vigente
 	if (req.body.tarifaEnvio) {
+		// consultar la tarifa de envio actual
 		try {
-			const facturasOrden = await Orden.findOne({
-				attributes: [],
-				include: {
-					model: Factura,
-					attributes: ['id', 'estado'],
-					where: { estado: 'v' },
-				},
-				where: { id: req.params.Id },
-			});
+			const orden = await Orden.findOne({ where: { id: req.params.Id } });
 
-			if (facturasOrden) {
-				res.json({
-					msg: 'El costo de envío no puede ser modificado porque la orden tiene una factura vigente',
-					severity: 'warning',
+			if (parseFloat(req.body.tarifaEnvio) !== parseFloat(orden.tarifaEnvio)) {
+				const factura = await Orden.findOne({
+					attributes: [],
+					include: {
+						model: Factura,
+						attributes: ['id', 'estado'],
+						where: { estado: 'v' },
+					},
+					where: { id: req.params.Id },
 				});
-				return;
-			} else {
-				try {
-					await Orden.update(
-						{
-							observaciones: req.body.observaciones,
-							direccionEnvio: req.body.direccionEnvio,
-							TipoEnvioId: req.body.tipoEnvioId,
-							PtoVentaId: req.body.PtoVentaId,
-							tarifaEnvio: req.body.tarifaEnvio,
-							OrdenEstadoId: req.body.OrdenEstadoId,
-						},
-						{
-							where: {
-								id: req.params.Id,
-							},
-						}
-					);
 
-					// res.json({ modificacion });
-					res
-						.status(200)
-						.send({ msg: 'La orden ha sido modificada!', severity: 'success' });
-				} catch (error) {
-					res.json(error);
+				if (factura) {
+					const estado = factura.Facturas[0].estado;
+					if (estado === 'v') {
+						res.status(400).send({
+							msg: 'No se puede cambiar el costo de envio. La orden tiene una factura vigente',
+							severity: 'error',
+						});
+						return;
+					}
 				}
 			}
 		} catch (error) {
-			res.json(error);
+			res.status(400).send({
+				msg: 'Hubo un error',
+				severity: 'error',
+			});
 		}
-	} else {
-		try {
-			await Orden.update(
-				{
-					observaciones: req.body.observaciones,
-					direccionEnvio: req.body.direccionEnvio,
-					TipoEnvioId: req.body.tipoEnvioId,
-					PtoVentaId: req.body.PtoVentaId,
-					OrdenEstadoId: req.body.OrdenEstadoId,
-					tarifaEnvio: req.body.tarifaEnvio,
-				},
-				{
-					where: {
-						id: req.params.Id,
-					},
-				}
-			);
+	}
 
-			res
-				.status(200)
-				.send({ msg: 'La orden ha sido modificada!', severity: 'success' });
-		} catch (error) {
-			res.status(400).send({ msg: 'Hubo un error!', severity: 'error' });
-		}
+	try {
+		await Orden.update(
+			{
+				observaciones: req.body.observaciones,
+				direccionEnvio: req.body.direccionEnvio,
+				TipoEnvioId: req.body.tipoEnvioId,
+				PtoVentaId: req.body.PtoVentaId,
+				tarifaEnvio: req.body.tarifaEnvio,
+				OrdenEstadoId: req.body.OrdenEstadoId,
+				ordenEcommerce: req.body.ordenEcommerce,
+			},
+			{
+				where: {
+					id: req.params.Id,
+				},
+			}
+		);
+
+		res
+			.status(200)
+			.send({ msg: 'La orden ha sido modificada!', severity: 'success' });
+	} catch (error) {
+		res.status(400).send({
+			msg: 'Hubo un error',
+			severity: 'error',
+		});
 	}
 };
 
