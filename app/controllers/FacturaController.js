@@ -40,7 +40,7 @@ exports.crearFactura = async (req, res) => {
 		res.status(200).json(factura);
 	} catch (error) {
 		await t.rollback();
-		res.json(error);
+		res.status(400).json(error);
 	}
 };
 
