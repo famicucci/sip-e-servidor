@@ -1,6 +1,7 @@
 const {
 	Factura,
 	FacturaDetalle,
+	Producto,
 	Usuario,
 	Cliente,
 	Orden,
@@ -119,6 +120,10 @@ exports.traerFactura = async (req, res) => {
 					model: FacturaDetalle,
 					as: 'detalleFactura',
 					attributes: { exclude: ['FacturaId'] },
+					include: {
+						model: Producto,
+						attributes: { exclude: ['EmpresaId'] },
+					},
 				},
 				{
 					model: Pago,
