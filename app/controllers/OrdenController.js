@@ -171,6 +171,7 @@ exports.traerOrdenes = async (req, res) => {
 					'OrdenEstadoId',
 				],
 			},
+			order: [['createdAt', 'DESC']],
 			include: [
 				{
 					model: Factura,
