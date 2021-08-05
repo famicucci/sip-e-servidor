@@ -267,6 +267,12 @@ exports.traerOrden = async (req, res) => {
 							model: FacturaDetalle,
 							as: 'detalleFactura',
 							attributes: { exclude: ['FacturaId'] },
+							include: [
+								{
+									model: Producto,
+									attributes: ['descripcion'],
+								},
+							],
 						},
 						{
 							model: Pago,
@@ -291,7 +297,26 @@ exports.traerOrden = async (req, res) => {
 					attributes: {
 						exclude: ['OrdenId', 'PtoStockId'],
 					},
-					include: { model: PtoStock, attributes: ['id', 'descripcion'] },
+					include: [
+						{ model: PtoStock, attributes: ['id', 'descripcion'] },
+						{
+							model: Producto,
+							attributes: ['descripcion'],
+						},
+					],
+				},
+				{
+					model: TipoEnvio,
+					attributes: ['id', 'descripcion'],
+				},
+				{
+					model: PtoVenta,
+					as: 'PtoVenta',
+					attributes: ['id', 'descripcion'],
+				},
+				{
+					model: OrdenEstado,
+					attributes: ['id', 'descripcion'],
 				},
 			],
 			where: { id: req.params.Id },
