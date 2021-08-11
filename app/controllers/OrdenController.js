@@ -163,13 +163,7 @@ exports.traerOrdenes = async (req, res) => {
 	try {
 		const ordenes = await Orden.findAll({
 			attributes: {
-				exclude: [
-					'ClienteId',
-					'UsuarioId',
-					'TipoEnvioId',
-					'PtoVentaId',
-					'OrdenEstadoId',
-				],
+				exclude: ['ClienteId', 'UsuarioId', 'PtoVentaId', 'OrdenEstadoId'],
 			},
 			order: [['createdAt', 'DESC']],
 			include: [
@@ -226,10 +220,10 @@ exports.traerOrdenes = async (req, res) => {
 						},
 					],
 				},
-				{
-					model: TipoEnvio,
-					attributes: ['id', 'descripcion'],
-				},
+				// {
+				// 	model: TipoEnvio,
+				// 	attributes: ['id', 'descripcion'],
+				// },
 				{
 					model: PtoVenta,
 					as: 'PtoVenta',
