@@ -48,7 +48,7 @@ exports.crearOrden = async (req, res) => {
 			if (prodStock) {
 				cantProdStock = prodStock.cantidad;
 			} else {
-				res.json({
+				res.status(400).send({
 					msg: `El producto ${element.ProductoCodigo} o su punto de stock no se encuentran en la base de datos`,
 					severity: 'error',
 				});
