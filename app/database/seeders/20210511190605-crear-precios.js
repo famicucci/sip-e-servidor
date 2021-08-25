@@ -61,7 +61,7 @@ module.exports = {
 			{
 				ProductoCodigo: 'RDA100112MR',
 				pu: '1010',
-				ListaPrecioId: '2',
+				ListaPrecioId: '1',
 				createdAt: moment().format(),
 			},
 			{

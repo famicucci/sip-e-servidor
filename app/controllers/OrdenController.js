@@ -154,7 +154,7 @@ exports.crearOrden = async (req, res) => {
 		}
 	} catch (error) {
 		await t.rollback();
-		res.json({ error: 'Hubo un error' });
+		res.status(400).send({ error: 'Hubo un error' });
 	}
 };
 
@@ -220,10 +220,6 @@ exports.traerOrdenes = async (req, res) => {
 						},
 					],
 				},
-				// {
-				// 	model: TipoEnvio,
-				// 	attributes: ['id', 'descripcion'],
-				// },
 				{
 					model: PtoVenta,
 					as: 'PtoVenta',
@@ -238,7 +234,7 @@ exports.traerOrdenes = async (req, res) => {
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {
-		res.json(error);
+		res.status(400).send(error);
 	}
 };
 
@@ -317,7 +313,7 @@ exports.traerOrden = async (req, res) => {
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {
-		res.json(error);
+		res.status(400).send(error);
 	}
 };
 
@@ -368,7 +364,7 @@ exports.traerOrdenesCliente = async (req, res) => {
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {
-		res.json(error);
+		res.status(400).send(error);
 	}
 };
 
@@ -440,7 +436,7 @@ exports.modificarOrden = async (req, res) => {
 
 exports.eliminarOrden = async (req, res) => {
 	try {
-		const facturasOrden = await Orden.findOne({
+		const invoice = await Orden.findOne({
 			attributes: [],
 			include: {
 				model: Factura,
@@ -450,29 +446,57 @@ exports.eliminarOrden = async (req, res) => {
 			where: { id: req.params.Id },
 		});
 
-		if (facturasOrden) {
+		if (invoice) {
 			res.json({
 				msg: 'La orden no puede ser eliminada porque tiene una factura vigente',
 				severity: 'error',
 			});
 			return;
 		} else {
+			// rollback
+			const t = await sequelize.transaction();
 			try {
+				// restore products in the stock
+				const r = await Orden.findOne({
+					attributes: [],
+					include: {
+						model: OrdenDetalle,
+						as: 'detalleOrden',
+					},
+					where: { id: req.params.Id },
+				});
+
+				r.detalleOrden.forEach(async (element) => {
+					if (element.PtoStockId)
+						await Stock.increment(
+							{ cantidad: element.cantidad },
+							{
+								transaction: t,
+								where: {
+									ProductoCodigo: element.ProductoCodigo,
+									PtoStockId: element.PtoStockId,
+								},
+							}
+						);
+				});
+
 				await Orden.destroy({
+					transaction: t,
 					where: {
 						id: req.params.Id,
 					},
 				});
 
+				await t.commit();
 				res
 					.status(200)
 					.send({ msg: 'La orden ha sido eliminada!', severity: 'success' });
 			} catch (error) {
-				res.json(error);
-				res.status(200).send({ msg: 'Hubo un error!', severity: 'error' });
+				await t.rollback();
+				res.status(400).send({ msg: 'Hubo un error!', severity: 'error' });
 			}
 		}
 	} catch (error) {
-		res.status(200).send({ msg: 'Hubo un error!', severity: 'error' });
+		res.status(400).send({ msg: 'Hubo un error!', severity: 'error' });
 	}
 };
