@@ -223,7 +223,7 @@ exports.traerOrdenes = async (req, res) => {
 				{
 					model: PtoVenta,
 					as: 'PtoVenta',
-					attributes: ['id', 'descripcion'],
+					attributes: ['id', 'descripcion', 'PtoStockId'],
 				},
 				{
 					model: OrdenEstado,
