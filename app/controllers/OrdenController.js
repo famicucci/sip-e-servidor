@@ -191,9 +191,8 @@ exports.traerOrdenes = async (req, res) => {
 						{
 							model: Pago,
 							attributes: {
-								exclude: ['FacturaId', 'UsuarioId', 'MetodoPagoId'],
+								exclude: ['FacturaId', 'UsuarioId'],
 							},
-							include: { model: MetodoPago, attributes: ['id', 'descripcion'] },
 						},
 					],
 				},
