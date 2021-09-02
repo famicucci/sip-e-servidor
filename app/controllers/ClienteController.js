@@ -50,11 +50,11 @@ exports.modificarCliente = async (req, res) => {
 				.send({ msg: 'El cliente ha sido modificado!', severity: 'success' });
 		} else {
 			res
-				.status(400)
+				.status(200)
 				.send({ error: 'No se produjo ningún cambio en la base de datos' });
 		}
 	} catch (error) {
-		res.json(error);
+		res.status(400).send({ error: 'Hubo un error', severity: 'error' });
 	}
 };
 
