@@ -72,6 +72,74 @@ exports.modificarFactura = async (req, res) => {
 	}
 };
 
+exports.cancelInvoice = async (req, res) => {
+	const t = await sequelize.transaction();
+	try {
+		// check existing payments
+		const payments = await Pago.findAll({
+			where: { FacturaId: req.params.Id },
+		});
+
+		if (payments.length > 0) {
+			res.status(400).json({
+				msg: 'This invoice has a created payment, please remove it',
+				severity: 'error',
+			});
+			return;
+		}
+
+		// update invoice with => estadoPago: cancelado, tipo: nc, estado: c, OrdenId: null
+		await Factura.update(
+			{
+				observaciones: req.body.observaciones,
+				estadoPago: 'Cancelado',
+				estado: 'c',
+				OrdenId: null,
+			},
+			{ where: { id: req.params.Id }, transaction: t }
+		);
+
+		// get necessary data from current invoice
+		const currentInvoice = await Factura.findOne({
+			where: { id: req.params.Id },
+		});
+
+		let totalAmount = 0;
+		let clientId;
+		if (currentInvoice) {
+			totalAmount = currentInvoice.importeFinal;
+			clientId = currentInvoice.ClienteId;
+		}
+
+		await Factura.create(
+			{
+				observaciones: req.body.observaciones,
+				estadoPago: 'Pago',
+				tipo: 'nc',
+				estado: 'v',
+				OrdenId: null,
+				importe: totalAmount,
+				importeFinal: totalAmount,
+				ClienteId: clientId,
+				UsuarioId: req.usuarioId,
+				tarifaEnvio: 0,
+			},
+			{ transaction: t }
+		);
+
+		await t.commit();
+		res.json({
+			msg: 'The invoice was canceled',
+			severity: 'success',
+		});
+
+		// create a credit note with the same total value as current invoice
+	} catch (error) {
+		await t.rollback();
+		res.status(400).json(error);
+	}
+};
+
 // traer facturas de ordenes no finalizadas y no canceladas
 exports.traerFacturas = async (req, res) => {
 	try {

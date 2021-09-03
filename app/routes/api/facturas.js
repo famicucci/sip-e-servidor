@@ -6,6 +6,7 @@ router.get('/', FacturaController.traerFacturas);
 router.get('/cliente/:Id', FacturaController.traerFacturasCliente);
 router.post('/', FacturaController.crearFactura);
 router.put('/:Id', FacturaController.modificarFactura);
+router.patch('/:Id', FacturaController.cancelInvoice);
 router.get('/:Id', FacturaController.traerFactura);
 
 module.exports = router;
