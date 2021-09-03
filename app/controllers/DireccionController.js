@@ -19,3 +19,12 @@ exports.crearDireccion = async (req, res) => {
 		res.status(400).json(error);
 	}
 };
+
+exports.deleteAdress = async (req, res) => {
+	try {
+		await Direccion.destroy({ where: { id: JSON.parse(req.params.Ids) } });
+		res.status(200).json({ msg: 'Adresses were deleted' });
+	} catch (error) {
+		res.status(400).json(error);
+	}
+};
