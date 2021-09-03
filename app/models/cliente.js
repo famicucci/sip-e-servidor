@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 			});
 			Cliente.hasMany(models.Orden, {
 				foreignKey: { allowNull: false },
-				onDelete: 'CASCADE',
-				onUpdate: 'CASCADE',
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
 			});
 			Cliente.hasMany(models.Factura, {
 				foreignKey: { allowNull: false },

@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Orden.belongsTo(models.Cliente, {
 				foreignKey: { allowNull: false },
-				onDelete: 'CASCADE',
-				onUpdate: 'CASCADE',
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
 			});
 			Orden.belongsTo(models.PtoVenta, {
 				as: 'PtoVenta',
