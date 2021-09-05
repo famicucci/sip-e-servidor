@@ -75,12 +75,19 @@ exports.modificarFactura = async (req, res) => {
 exports.cancelInvoice = async (req, res) => {
 	const t = await sequelize.transaction();
 	try {
-		// check existing payments
+		let paymentsTotalAmount = 0;
+
 		const payments = await Pago.findAll({
 			where: { FacturaId: req.params.Id },
 		});
 
-		if (payments.length > 0) {
+		if (payments) {
+			payments.forEach((x) => {
+				paymentsTotalAmount += parseFloat(x.importe);
+			});
+		}
+
+		if (paymentsTotalAmount !== 0) {
 			res.status(400).json({
 				msg: 'This invoice has a created payment, please remove it',
 				severity: 'error',
