@@ -409,7 +409,7 @@ exports.modificarOrden = async (req, res) => {
 			{
 				observaciones: req.body.observaciones,
 				direccionEnvio: req.body.direccionEnvio,
-				TipoEnvioId: req.body.tipoEnvioId,
+				TipoEnvioId: req.body.TipoEnvioId,
 				PtoVentaId: req.body.PtoVentaId,
 				tarifaEnvio: req.body.tarifaEnvio,
 				OrdenEstadoId: req.body.OrdenEstadoId,
