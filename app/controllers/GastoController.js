@@ -91,14 +91,27 @@ exports.traerGastos = async (req, res) => {
 	}
 };
 
-exports.traerCatSubcat = async (req, res) => {
+exports.traerCategorias = async (req, res) => {
 	try {
 		const categorias = await GastoCategoria.findAll({
 			where: { EmpresaId: req.usuarioEmpresaId },
+			attributes: { exclude: ['EmpresaId'] },
+		});
+		res.json(categorias);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
+exports.traerSubcategorias = async (req, res) => {
+	try {
+		const categorias = await GastoSubcategoria.findAll({
+			attributes: { exclude: ['GastoCategoriaId'] },
 			include: [
 				{
-					attributes: ['id', 'descripcion'],
-					model: GastoSubcategoria,
+					attributes: [],
+					model: GastoCategoria,
+					where: { EmpresaId: req.usuarioEmpresaId },
 				},
 			],
 		});
