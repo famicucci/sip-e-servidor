@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			GastoCategoria.hasMany(models.Gasto, {
+				as: 'GastoCategoria',
 				foreignKey: { name: 'GastoCategoriaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',

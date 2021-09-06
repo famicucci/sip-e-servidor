@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			Gasto.belongsTo(models.GastoCategoria, {
+				as: 'GastoCategoria',
 				foreignKey: { name: 'GastoCategoriaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
 			Gasto.belongsTo(models.GastoSubcategoria, {
+				as: 'GastoSubcategoria',
 				foreignKey: { name: 'GastoSubcategoriaId', allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',

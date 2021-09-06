@@ -68,9 +68,14 @@ exports.traerGastos = async (req, res) => {
 			include: [
 				{
 					model: GastoCategoria,
-					attributes: ['descripcion'],
+					as: 'GastoCategoria',
+					attributes: ['id'],
 				},
-				{ model: GastoSubcategoria, attributes: ['descripcion'] },
+				{
+					model: GastoSubcategoria,
+					as: 'GastoSubcategoria',
+					attributes: ['id'],
+				},
 				{
 					model: Usuario,
 					attributes: ['usuario'],
