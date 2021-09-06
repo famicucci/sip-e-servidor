@@ -116,7 +116,7 @@ exports.traerProductosAMover = async (req, res) => {
 			INNER JOIN PtoVenta ON Orden.PtoVentaId = PtoVenta.ID
 			INNER JOIN PtoStock AS pto_stock_producto ON OrdenDetalle.PtoStockId = pto_stock_producto.ID
 			INNER JOIN PtoStock AS pto_stock_pto_venta ON PtoVenta.PtoStockId = pto_stock_pto_venta.ID
-			WHERE OrdenDetalle.Origen = 'PtoStock'
+			WHERE OrdenDetalle.Origen = 'Disponible'
 			AND (Orden.OrdenEstadoId != '11')
 			AND OrdenDetalle.PtoStockId != PtoVenta.PtoStockId
 			AND producto.EmpresaId = '1'`,
