@@ -14,6 +14,7 @@ exports.crearGasto = async (req, res) => {
 			UsuarioId: req.usuarioId,
 			GastoCategoriaId: req.body.GastoCategoriaId,
 			GastoSubcategoriaId: req.body.GastoSubcategoriaId,
+			createdAt: req.body.createdAt,
 		});
 		res.json(gasto);
 	} catch (error) {
@@ -22,7 +23,6 @@ exports.crearGasto = async (req, res) => {
 };
 
 exports.modificarGasto = async (req, res) => {
-	console.log(req.body);
 	try {
 		const gasto = await Gasto.update(
 			{
@@ -32,6 +32,7 @@ exports.modificarGasto = async (req, res) => {
 				UsuarioId: req.usuarioId,
 				GastoCategoriaId: req.body.GastoCategoriaId,
 				GastoSubcategoriaId: req.body.GastoSubcategoriaId,
+				createdAt: req.body.createdAt,
 			},
 			{
 				where: { id: req.params.Id },
@@ -39,15 +40,14 @@ exports.modificarGasto = async (req, res) => {
 		);
 
 		// verifica si el update fue exitoso
-		if (gasto[0]) {
+		if (gasto[0])
 			res
 				.status(200)
 				.send({ msg: 'El gasto ha sido modificado!', severity: 'success' });
-		} else {
+		else
 			res
 				.status(400)
 				.send({ error: 'No se produjo ningún cambio en la base de datos' });
-		}
 	} catch (error) {
 		res.json(error);
 	}
@@ -56,34 +56,13 @@ exports.modificarGasto = async (req, res) => {
 exports.traerGastos = async (req, res) => {
 	try {
 		const gastos = await Gasto.findAll({
-			attributes: [
-				'id',
-				'descripcion',
-				'estado',
-				'importe',
-				'createdAt',
-				'updatedAt',
-				'UsuarioId',
-			],
-			include: [
-				{
-					model: GastoCategoria,
-					as: 'GastoCategoria',
-					attributes: ['id'],
-				},
-				{
-					model: GastoSubcategoria,
-					as: 'GastoSubcategoria',
-					attributes: ['id'],
-				},
-				{
-					model: Usuario,
-					attributes: ['usuario'],
-					where: { EmpresaId: req.usuarioEmpresaId },
-				},
-			],
-
-			raw: true,
+			attributes: { exclude: ['UsuarioId'] },
+			order: [['createdAt', 'DESC']],
+			include: {
+				model: Usuario,
+				attributes: ['id', 'usuario'],
+				where: { EmpresaId: req.usuarioEmpresaId },
+			},
 		});
 		res.json(gastos);
 	} catch (error) {
@@ -106,7 +85,6 @@ exports.traerCategorias = async (req, res) => {
 exports.traerSubcategorias = async (req, res) => {
 	try {
 		const categorias = await GastoSubcategoria.findAll({
-			attributes: { exclude: ['GastoCategoriaId'] },
 			include: [
 				{
 					attributes: [],
