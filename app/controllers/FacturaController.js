@@ -11,6 +11,7 @@ const {
 } = require('../models/index');
 const { sequelize } = require('../models/index');
 const { Op } = require('sequelize');
+const moment = require('moment');
 
 exports.crearFactura = async (req, res) => {
 	// rollback
@@ -148,12 +149,36 @@ exports.cancelInvoice = async (req, res) => {
 };
 
 // traer facturas de ordenes no finalizadas y no canceladas
-exports.traerFacturas = async (req, res) => {
+exports.getInvoicing = async (req, res) => {
+	const dates = JSON.parse(req.params.Dates);
+
+	const startDate = moment(dates.startDate).subtract({
+		hours: 3,
+	});
+	const endDate = moment(dates.endDate).add({
+		hours: 21,
+	});
+
 	try {
 		const facturas = await Factura.findAll({
+			attributes: { exclude: ['UsuarioId', 'ClienteId'] },
+			where: {
+				createdAt: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
 			include: [
+				{
+					model: FacturaDetalle,
+					as: 'detalleFactura',
+					attributes: { exclude: ['ProductoCodigo', 'FacturaId'] },
+					include: {
+						model: Producto,
+						attributes: { exclude: ['EmpresaId'] },
+					},
+				},
 				{ model: Usuario, attributes: ['usuario'] },
-				{ model: Cliente, attributes: ['nombre', 'apellido'] },
+				{ model: Cliente, attributes: ['id', 'nombre', 'apellido'] },
 				{
 					model: Orden,
 					attributes: [],
