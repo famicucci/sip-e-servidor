@@ -4,6 +4,8 @@ const {
 	GastoSubcategoria,
 	Usuario,
 } = require('../models/index');
+const { Op } = require('sequelize');
+const moment = require('moment');
 
 exports.crearGasto = async (req, res) => {
 	try {
@@ -54,9 +56,23 @@ exports.modificarGasto = async (req, res) => {
 };
 
 exports.traerGastos = async (req, res) => {
+	const dates = JSON.parse(req.params.Dates);
+
+	const startDate = moment(dates.startDate).subtract({
+		hours: 3,
+	});
+	const endDate = moment(dates.endDate).add({
+		hours: 21,
+	});
+
 	try {
 		const gastos = await Gasto.findAll({
 			attributes: { exclude: ['UsuarioId'] },
+			where: {
+				createdAt: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
 			order: [['createdAt', 'DESC']],
 			include: {
 				model: Usuario,

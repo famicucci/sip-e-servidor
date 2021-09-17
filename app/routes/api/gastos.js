@@ -5,7 +5,7 @@ const GastoController = require('../../controllers/GastoController');
 router.get('/categorias', GastoController.traerCategorias);
 router.get('/subcategorias', GastoController.traerSubcategorias);
 router.post('/', GastoController.crearGasto);
-router.get('/', GastoController.traerGastos);
+router.get('/:Dates', GastoController.traerGastos);
 router.put('/:Id', GastoController.modificarGasto);
 router.delete('/:Id', GastoController.eliminarGasto);
 
