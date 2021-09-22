@@ -208,36 +208,3 @@ exports.traerFacturasCliente = async (req, res) => {
 		res.json(error);
 	}
 };
-
-exports.traerFactura = async (req, res) => {
-	try {
-		const facturas = await Factura.findOne({
-			attributes: { exclude: ['ClienteId', 'UsuarioId'] },
-			include: [
-				{ model: Cliente, attributes: ['id', 'nombre', 'apellido'] },
-				{ model: Usuario, attributes: ['usuario'] },
-				{
-					model: FacturaDetalle,
-					as: 'detalleFactura',
-					attributes: { exclude: ['FacturaId'] },
-					include: {
-						model: Producto,
-						attributes: { exclude: ['EmpresaId'] },
-					},
-				},
-				{
-					model: Pago,
-					attributes: { exclude: ['FacturaId'] },
-					include: {
-						model: MetodoPago,
-						attributes: { exclude: ['EmpresaId'] },
-					},
-				},
-			],
-			where: { id: req.params.Id },
-		});
-		res.status(200).json(facturas);
-	} catch (error) {
-		res.json(error);
-	}
-};
