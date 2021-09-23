@@ -1,4 +1,5 @@
 const { Pago, Factura } = require('../models/index');
+const { sequelize } = require('../models/index');
 
 exports.crearPago = async (req, res) => {
 	try {
@@ -8,6 +9,8 @@ exports.crearPago = async (req, res) => {
 			MetodoPagoId: req.body.MetodoPagoId,
 			createdAt: req.body.createdAt,
 			UsuarioId: req.usuarioId,
+			estado: 'v',
+			tipo: 'i',
 		});
 
 		let invoiceTotalAmount;
@@ -46,28 +49,51 @@ exports.crearPago = async (req, res) => {
 };
 
 exports.cancelPayment = async (req, res) => {
+	const t = await sequelize.transaction();
+
 	try {
 		// select payment to be canceled
 		const payment = await Pago.findByPk(req.params.Id);
 
+		if (payment.estado === 'c')
+			res
+				.status(400)
+				.json({ msg: 'Payment was already canceled', severity: 'error' });
+
 		if (payment) {
-			const negativePayment = await Pago.create({
-				importe: -payment.importe,
-				FacturaId: payment.FacturaId,
-				MetodoPagoId: req.body.MetodoPagoId,
-				UsuarioId: req.usuarioId,
-			});
+			const negativePayment = await Pago.create(
+				{
+					importe: -payment.importe,
+					FacturaId: payment.FacturaId,
+					MetodoPagoId: req.body.MetodoPagoId,
+					UsuarioId: req.usuarioId,
+					estado: 'v',
+					tipo: 'nc',
+				},
+				{
+					transaction: t,
+				}
+			);
 
 			// update estadoPago in invoice with: 'Pendiente'
 			await Factura.update(
 				{
 					estadoPago: 'Pendiente',
 				},
-				{ where: { id: payment.FacturaId } }
+				{ transaction: t, where: { id: payment.FacturaId } }
 			);
 
+			await Pago.update(
+				{
+					estado: 'c',
+				},
+				{ transaction: t, where: { id: req.params.Id } }
+			);
+
+			await t.commit();
 			res.status(200).json(negativePayment);
 		} else {
+			await t.rollback();
 			res.status(400).json({ msg: 'Payment doesn´t exist', severity: 'error' });
 		}
 	} catch (error) {

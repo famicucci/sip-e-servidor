@@ -23,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
 	Pago.init(
 		{
 			importe: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+			estado: { type: DataTypes.STRING(1), defaultValue: 'v' },
+			tipo: DataTypes.STRING(3),
 		},
 		{
 			sequelize,
