@@ -17,7 +17,7 @@ exports.modificarDetalleOrden = async (req, res) => {
 		});
 		if (invoice) {
 			await t.rollback();
-			res.json({
+			res.status(400).send({
 				msg: `The order has a valid invoice`,
 				severity: 'error',
 			});

@@ -446,7 +446,7 @@ exports.eliminarOrden = async (req, res) => {
 		});
 
 		if (invoice) {
-			res.json({
+			res.status(400).send({
 				msg: 'La orden no puede ser eliminada porque tiene una factura vigente',
 				severity: 'error',
 			});
