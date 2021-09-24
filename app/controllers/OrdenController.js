@@ -320,35 +320,47 @@ exports.traerOrdenesCliente = async (req, res) => {
 	try {
 		const ordenes = await Orden.findAll({
 			attributes: {
-				exclude: [
-					'ClienteId',
-					'UsuarioId',
-					'TipoEnvioId',
-					'OrdenEstadoId',
-					'PtoVentaId',
-				],
+				exclude: ['ClienteId', 'UsuarioId', 'PtoVentaId', 'OrdenEstadoId'],
 			},
+			order: [['createdAt', 'DESC']],
 			include: [
 				{
 					model: Factura,
-					attributes: ['id'],
+					attributes: {
+						exclude: ['OrdenId', 'UsuarioId', 'tipo', 'estado', 'ClienteId'],
+					},
+					include: [
+						{
+							model: Cliente,
+							attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+						},
+						{
+							model: FacturaDetalle,
+							as: 'detalleFactura',
+							attributes: { exclude: ['FacturaId'] },
+							include: [
+								{
+									model: Producto,
+									attributes: ['descripcion'],
+								},
+							],
+						},
+						{
+							model: Pago,
+							attributes: {
+								exclude: ['FacturaId', 'UsuarioId'],
+							},
+						},
+					],
+				},
+				{
+					model: Cliente,
+					attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+					include: { model: Direccion, as: 'direcciones' },
 				},
 				{
 					model: Usuario,
 					attributes: ['usuario'],
-				},
-				{
-					model: PtoVenta,
-					as: 'PtoVenta',
-					attributes: ['id', 'descripcion'],
-				},
-				{
-					model: TipoEnvio,
-					attributes: ['id', 'descripcion'],
-				},
-				{
-					model: OrdenEstado,
-					attributes: ['id', 'descripcion'],
 				},
 				{
 					model: OrdenDetalle,
@@ -356,7 +368,22 @@ exports.traerOrdenesCliente = async (req, res) => {
 					attributes: {
 						exclude: ['OrdenId', 'PtoStockId'],
 					},
-					include: { model: PtoStock, attributes: ['id', 'descripcion'] },
+					include: [
+						{ model: PtoStock, attributes: ['id', 'descripcion'] },
+						{
+							model: Producto,
+							attributes: ['descripcion'],
+						},
+					],
+				},
+				{
+					model: PtoVenta,
+					as: 'PtoVenta',
+					attributes: ['id', 'descripcion', 'PtoStockId'],
+				},
+				{
+					model: OrdenEstado,
+					attributes: ['id', 'descripcion'],
 				},
 			],
 			where: { ClienteId: req.params.IdCliente },

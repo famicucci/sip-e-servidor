@@ -201,7 +201,31 @@ exports.getInvoicing = async (req, res) => {
 exports.traerFacturasCliente = async (req, res) => {
 	try {
 		const facturas = await Factura.findAll({
+			attributes: { exclude: ['UsuarioId', 'ClienteId'] },
 			where: { ClienteId: req.params.Id },
+			include: [
+				{
+					model: FacturaDetalle,
+					as: 'detalleFactura',
+					attributes: { exclude: ['ProductoCodigo', 'FacturaId'] },
+					include: {
+						model: Producto,
+						attributes: { exclude: ['EmpresaId'] },
+					},
+				},
+				{ model: Usuario, attributes: ['usuario'] },
+				{ model: Cliente, attributes: ['id', 'nombre', 'apellido'] },
+				{
+					model: Orden,
+					attributes: [],
+					include: [
+						{
+							model: OrdenEstado,
+							attributes: ['descripcion'],
+						},
+					],
+				},
+			],
 		});
 		res.status(200).json(facturas);
 	} catch (error) {
