@@ -20,6 +20,9 @@ const apiOrdenesRouter = require('./api/ordenes');
 const apiDetallesOrdenRouter = require('./api/detallesorden');
 const apiInformesRouter = require('./api/informes');
 
+router.get('/', (req, res) => {
+	res.json('Bienvenido');
+});
 router.use('/usuarios', apiUsuariosRouter);
 router.use('/empresas', middlewares.checkToken, apiEmpresasRouter);
 router.use('/productos', middlewares.checkToken, apiProductosRouter);
