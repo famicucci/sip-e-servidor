@@ -1,35 +1,38 @@
 'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('stocks', {
+		await queryInterface.createTable('stock', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			ProductoCodigo: {
-				type: Sequelize.STRING(15),
-				allowNull: false,
-				references: { model: 'productos', key: 'codigo' },
-				onUpdate: 'CASCADE',
-				onDelete: 'CASCADE',
-			},
 			cantidad: {
-				type: Sequelize.INTEGER,
-			},
-			PtoStockId: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.INTEGER(11).UNSIGNED,
 				allowNull: false,
-				references: { model: 'ptostocks', key: 'id' },
 			},
 			updatedAt: {
 				allowNull: false,
 				type: Sequelize.DATE,
 			},
+			ProductoCodigo: {
+				type: Sequelize.STRING(15),
+				allowNull: false,
+				references: { model: 'producto', key: 'codigo' },
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
+			},
+			PtoStockId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'ptostock', key: 'id' },
+				onUpdate: 'RESTRICT',
+				onDelete: 'RESTRICT',
+			},
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('stocks');
+		await queryInterface.dropTable('stock');
 	},
 };
