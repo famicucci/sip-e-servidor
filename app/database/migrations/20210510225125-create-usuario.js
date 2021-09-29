@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('usuarios', {
+		await queryInterface.createTable('usuario', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -25,11 +25,6 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				allowNull: false,
 			},
-			EmpresaId: {
-				type: Sequelize.INTEGER,
-				allowNull: false,
-				references: { model: 'empresas', key: 'id' },
-			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,
@@ -38,9 +33,16 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE,
 			},
+			EmpresaId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'empresa', key: 'id' },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			},
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('usuarios');
+		await queryInterface.dropTable('usuario');
 	},
 };
