@@ -15,6 +15,8 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 				references: { model: 'empresas', key: 'id' },
+				onDelete: 'no action',
+				onUpdate: 'no action',
 			},
 		});
 	},
