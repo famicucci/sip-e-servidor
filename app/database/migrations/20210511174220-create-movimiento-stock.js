@@ -1,43 +1,49 @@
 'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('movimientostocks', {
+		await queryInterface.createTable('movimientostock', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			ProductoCodigo: {
-				type: Sequelize.STRING(15),
-				allowNull: false,
-				references: { model: 'productos', key: 'codigo' },
-				onDelete: 'CASCADE',
-				onUpdate: 'CASCADE',
-			},
 			cantidad: {
-				type: Sequelize.INTEGER,
-				allowNull: false,
-			},
-			PtoStockId: {
-				type: Sequelize.INTEGER,
-				allowNull: false,
-				references: { model: 'ptostocks', key: 'id' },
-			},
-			UsuarioId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 			},
 			motivo: {
 				type: Sequelize.STRING(30),
+				allowNull: false,
 			},
 			createdAt: {
-				allowNull: false,
 				type: Sequelize.DATE,
+				allowNull: false,
+			},
+			ProductoCodigo: {
+				type: Sequelize.STRING(15),
+				allowNull: false,
+				references: { model: 'producto', key: 'codigo' },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			},
+			PtoStockId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'ptostock', key: 'id' },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			},
+			UsuarioId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'usuario', key: 'id' },
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
 			},
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('movimientostocks');
+		await queryInterface.dropTable('movimientostock');
 	},
 };
