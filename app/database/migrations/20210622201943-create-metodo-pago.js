@@ -1,27 +1,25 @@
 'use strict';
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('metodoPagos', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      descripcion: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('metodoPagos');
-  }
+	up: async (queryInterface, Sequelize) => {
+		await queryInterface.createTable('metodopago', {
+			id: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+			},
+			descripcion: {
+				type: Sequelize.STRING(30),
+				allowNull: false,
+			},
+			EmpresaId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'empresa', key: 'id' },
+			},
+		});
+	},
+	down: async (queryInterface, Sequelize) => {
+		await queryInterface.dropTable('metodopago');
+	},
 };
