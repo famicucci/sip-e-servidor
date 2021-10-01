@@ -8,8 +8,8 @@ module.exports = {
 	dialect: process.env.DB_DIALECT || 'mysql',
 
 	// configurar seeds
-	seederStorage: 'json',
-	seederStoragePath: 'sequelizeSeed.json',
+	seederStorage: 'sequelize',
+	seederStorageName: 'seeds',
 
 	// Configurar migraciones
 	migrationStorage: 'sequelize',

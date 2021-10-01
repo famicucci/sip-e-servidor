@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node app/server.js",
 		"dev": "nodemon app/server.js",
-		"build": "sequelize db:migrate --env production"
+		"build": "sequelize db:migrate --env production && sequelize db:seed:all --env production"
 	},
 	"keywords": [],
 	"author": "",
