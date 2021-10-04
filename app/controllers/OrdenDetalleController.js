@@ -60,7 +60,7 @@ exports.modificarDetalleOrden = async (req, res) => {
 				) {
 					if (y.cantidad - x.cantidad < 0) {
 						await t.rollback();
-						res.json({
+						res.status(400).send({
 							msg: `El producto ${x.ProductoCodigo} no tiene stock suficiente`,
 							severity: 'error',
 						});
