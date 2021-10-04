@@ -109,16 +109,16 @@ exports.traerProductosAMover = async (req, res) => {
 	try {
 		// const id = 2;
 		const productos = await sequelize.query(
-			`SELECT ordendetalle.ProductoCodigo, producto.Descripcion, ordendetalle.Cantidad, ordendetalle.PtoStockId AS ID_Pto_Stock_Producto , pto_stock_producto.Descripcion AS Pto_Stock_Producto_Descripcion, PtoVenta.PtoStockId AS ID_Pto_Stock_De_Pto_Venta, pto_stock_pto_venta.Descripcion AS Pto_Stock_Pto_Venta_Descripcion
+			`SELECT ordendetalle.ProductoCodigo, producto.descripcion, ordendetalle.cantidad, ordendetalle.PtoStockId AS ID_Pto_Stock_Producto , pto_stock_producto.descripcion AS Pto_Stock_Producto_Descripcion, PtoVenta.PtoStockId AS ID_Pto_Stock_De_Pto_Venta, pto_stock_pto_venta.Descripcion AS Pto_Stock_Pto_Venta_Descripcion
 			FROM ordendetalle 
-			INNER JOIN producto ON ordendetalle.ProductoCodigo = producto.Codigo
-			INNER JOIN orden ON ordendetalle.OrdenId = orden.ID
-			INNER JOIN PtoVenta ON orden.PtoVentaId = PtoVenta.ID
-			INNER JOIN PtoStock AS pto_stock_producto ON ordendetalle.PtoStockId = pto_stock_producto.ID
-			INNER JOIN PtoStock AS pto_stock_pto_venta ON PtoVenta.PtoStockId = pto_stock_pto_venta.ID
-			WHERE ordendetalle.Origen = 'Disponible'
+			INNER JOIN producto ON ordendetalle.ProductoCodigo = producto.codigo
+			INNER JOIN orden ON ordendetalle.OrdenId = orden.id
+			INNER JOIN ptoventa ON orden.PtoVentaId = ptoventa.id
+			INNER JOIN ptostock AS pto_stock_producto ON ordendetalle.PtoStockId = pto_stock_producto.id
+			INNER JOIN ptostock AS pto_stock_pto_venta ON ptoventa.PtoStockId = pto_stock_pto_venta.id
+			WHERE ordendetalle.origen = 'Disponible'
 			AND (orden.OrdenEstadoId != '11')
-			AND ordendetalle.PtoStockId != PtoVenta.PtoStockId
+			AND ordendetalle.PtoStockId != ptoventa.PtoStockId
 			AND producto.EmpresaId = '1'`,
 			{
 				type: QueryTypes.SELECT,
