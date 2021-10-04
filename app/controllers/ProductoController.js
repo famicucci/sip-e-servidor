@@ -112,12 +112,12 @@ exports.traerProductosAMover = async (req, res) => {
 			`SELECT ordendetalle.ProductoCodigo, producto.Descripcion, ordendetalle.Cantidad, ordendetalle.PtoStockId AS ID_Pto_Stock_Producto , pto_stock_producto.Descripcion AS Pto_Stock_Producto_Descripcion, PtoVenta.PtoStockId AS ID_Pto_Stock_De_Pto_Venta, pto_stock_pto_venta.Descripcion AS Pto_Stock_Pto_Venta_Descripcion
 			FROM ordendetalle 
 			INNER JOIN producto ON ordendetalle.ProductoCodigo = producto.Codigo
-			INNER JOIN Orden ON ordendetalle.OrdenId = Orden.ID
-			INNER JOIN PtoVenta ON Orden.PtoVentaId = PtoVenta.ID
+			INNER JOIN orden ON ordendetalle.OrdenId = orden.ID
+			INNER JOIN PtoVenta ON orden.PtoVentaId = PtoVenta.ID
 			INNER JOIN PtoStock AS pto_stock_producto ON ordendetalle.PtoStockId = pto_stock_producto.ID
 			INNER JOIN PtoStock AS pto_stock_pto_venta ON PtoVenta.PtoStockId = pto_stock_pto_venta.ID
 			WHERE ordendetalle.Origen = 'Disponible'
-			AND (Orden.OrdenEstadoId != '11')
+			AND (orden.OrdenEstadoId != '11')
 			AND ordendetalle.PtoStockId != PtoVenta.PtoStockId
 			AND producto.EmpresaId = '1'`,
 			{
