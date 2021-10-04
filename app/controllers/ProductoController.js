@@ -109,7 +109,7 @@ exports.traerProductosAMover = async (req, res) => {
 	try {
 		// const id = 2;
 		const productos = await sequelize.query(
-			`SELECT ordendetalle.ProductoCodigo, producto.descripcion, ordendetalle.cantidad, ordendetalle.PtoStockId AS ID_Pto_Stock_Producto , pto_stock_producto.descripcion AS Pto_Stock_Producto_Descripcion, PtoVenta.PtoStockId AS ID_Pto_Stock_De_Pto_Venta, pto_stock_pto_venta.Descripcion AS Pto_Stock_Pto_Venta_Descripcion
+			`SELECT ordendetalle.ProductoCodigo, producto.descripcion, ordendetalle.cantidad, ordendetalle.PtoStockId AS ID_Pto_Stock_Producto , pto_stock_producto.descripcion AS Pto_Stock_Producto_Descripcion, ptoventa.PtoStockId AS ID_Pto_Stock_De_Pto_Venta, pto_stock_pto_venta.Descripcion AS Pto_Stock_Pto_Venta_Descripcion
 			FROM ordendetalle 
 			INNER JOIN producto ON ordendetalle.ProductoCodigo = producto.codigo
 			INNER JOIN orden ON ordendetalle.OrdenId = orden.id
