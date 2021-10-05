@@ -237,6 +237,85 @@ exports.traerOrdenes = async (req, res) => {
 	}
 };
 
+// traer stock total y precios
+exports.traerOrdenesFinalizadas = async (req, res) => {
+	try {
+		const ordenes = await Orden.findAll({
+			attributes: {
+				exclude: ['ClienteId', 'UsuarioId', 'PtoVentaId', 'OrdenEstadoId'],
+			},
+			order: [['createdAt', 'DESC']],
+			include: [
+				{
+					model: Factura,
+					attributes: {
+						exclude: ['OrdenId', 'UsuarioId', 'tipo', 'estado', 'ClienteId'],
+					},
+					include: [
+						{
+							model: Cliente,
+							attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+						},
+						{
+							model: FacturaDetalle,
+							as: 'detalleFactura',
+							attributes: { exclude: ['FacturaId'] },
+							include: [
+								{
+									model: Producto,
+									attributes: ['descripcion'],
+								},
+							],
+						},
+						{
+							model: Pago,
+							attributes: {
+								exclude: ['FacturaId', 'UsuarioId'],
+							},
+						},
+					],
+				},
+				{
+					model: Cliente,
+					attributes: { exclude: ['EmpresaId', 'createdAt', 'updatedAt'] },
+					include: { model: Direccion, as: 'direcciones' },
+				},
+				{
+					model: Usuario,
+					attributes: ['usuario'],
+				},
+				{
+					model: OrdenDetalle,
+					as: 'detalleOrden',
+					attributes: {
+						exclude: ['OrdenId', 'PtoStockId'],
+					},
+					include: [
+						{ model: PtoStock, attributes: ['id', 'descripcion'] },
+						{
+							model: Producto,
+							attributes: ['descripcion'],
+						},
+					],
+				},
+				{
+					model: PtoVenta,
+					as: 'PtoVenta',
+					attributes: ['id', 'descripcion', 'PtoStockId'],
+				},
+				{
+					model: OrdenEstado,
+					attributes: ['id', 'descripcion'],
+				},
+			],
+			where: { OrdenEstadoId: { [Op.or]: [5, 6] } },
+		});
+		res.status(200).json(ordenes);
+	} catch (error) {
+		res.status(400).send(error);
+	}
+};
+
 exports.traerOrden = async (req, res) => {
 	try {
 		const ordenes = await Orden.findOne({
