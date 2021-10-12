@@ -33,6 +33,11 @@ module.exports = {
 				allowNull: false,
 				references: { model: 'usuario', key: 'id' },
 			},
+			EmpresaId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'empresa', key: 'id' },
+			},
 			GastoCategoriaId: {
 				type: Sequelize.INTEGER,
 				allowNull: false,

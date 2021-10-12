@@ -32,7 +32,7 @@ module.exports = {
 			ProductoCodigo: {
 				type: Sequelize.STRING(15),
 				allowNull: false,
-				references: { model: 'producto', key: 'codigo' },
+				// references: { model: 'producto', key: 'codigo' },
 				onDelete: 'NO ACTION',
 				onUpdate: 'NO ACTION',
 			},

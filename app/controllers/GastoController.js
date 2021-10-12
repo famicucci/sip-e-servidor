@@ -14,6 +14,7 @@ exports.crearGasto = async (req, res) => {
 			estado: req.body.estado,
 			importe: req.body.importe,
 			UsuarioId: req.usuarioId,
+			EmpresaId: req.usuarioEmpresaId,
 			GastoCategoriaId: req.body.GastoCategoriaId,
 			GastoSubcategoriaId: req.body.GastoSubcategoriaId,
 			createdAt: req.body.createdAt,
@@ -32,6 +33,7 @@ exports.modificarGasto = async (req, res) => {
 				estado: req.body.estado,
 				importe: req.body.importe,
 				UsuarioId: req.usuarioId,
+				EmpresaId: req.usuarioEmpresaId,
 				GastoCategoriaId: req.body.GastoCategoriaId,
 				GastoSubcategoriaId: req.body.GastoSubcategoriaId,
 				createdAt: req.body.createdAt,
@@ -67,7 +69,7 @@ exports.traerGastos = async (req, res) => {
 
 	try {
 		const gastos = await Gasto.findAll({
-			attributes: { exclude: ['UsuarioId'] },
+			attributes: { exclude: ['UsuarioId', 'EmpresaId'] },
 			where: {
 				createdAt: {
 					[Op.between]: [startDate, endDate],

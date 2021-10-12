@@ -17,6 +17,11 @@ module.exports = {
 				allowNull: false,
 				references: { model: 'gastocategoria', key: 'id' },
 			},
+			EmpresaId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'empresa', key: 'id' },
+			},
 		});
 	},
 	down: async (queryInterface, Sequelize) => {

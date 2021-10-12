@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',
 			});
+			Empresa.hasMany(models.Gasto, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
 			Empresa.hasMany(models.PtoStock, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',
@@ -40,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
 				onUpdate: 'RESTRICT',
 			});
 			Empresa.hasMany(models.GastoCategoria, {
+				foreignKey: { allowNull: false },
+				onDelete: 'RESTRICT',
+				onUpdate: 'RESTRICT',
+			});
+			Empresa.hasMany(models.GastoSubcategoria, {
 				foreignKey: { allowNull: false },
 				onDelete: 'RESTRICT',
 				onUpdate: 'RESTRICT',

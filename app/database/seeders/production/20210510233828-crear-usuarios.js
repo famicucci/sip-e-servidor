@@ -51,7 +51,7 @@ module.exports = {
 		let usuarios = oldUsuarios.map((x) => ({
 			id: x.ID,
 			nombre: x.NombreCompleto,
-			password: x.Clave,
+			password: bcryptjs.hashSync('Wpepa123', 10),
 			usuario: x.Usuario,
 			rol: 1,
 			createdAt: moment().format(),
