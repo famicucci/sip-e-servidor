@@ -8522,7 +8522,7 @@ module.exports = {
 		let gastos = oldData.map((x) => ({
 			id: x.ID,
 			descripcion: x.Descripcion,
-			estado: x.Estado,
+			estado: x.Estado === 'Pagado' ? 'Pago' : x.Estado,
 			importe: x.Importe,
 			createdAt: x.Fecha,
 			updatedAt: x.Fecha,
