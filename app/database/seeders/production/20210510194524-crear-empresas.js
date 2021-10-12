@@ -2,11 +2,18 @@
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		let empresas = [
+		const oldEmpresas = [
 			{
-				nombre: 'Pepa Pets',
+				ID: '1',
+				Descripcion: 'Pepapets',
 			},
 		];
+
+		let empresas = oldEmpresas.map((x) => ({
+			id: x.ID,
+			nombre: x.Descripcion,
+		}));
+
 		await queryInterface.bulkInsert('empresa', empresas, {});
 	},
 

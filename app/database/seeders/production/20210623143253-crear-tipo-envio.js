@@ -2,32 +2,53 @@
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		let tiposEnvio = [
+		const oldData = [
 			{
-				descripcion: 'Retiro',
-				EmpresaId: '1',
+				ID: '1',
+				Descripcion: 'Retiro',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'OCA',
-				EmpresaId: '1',
+				ID: '2',
+				Descripcion: 'Moto Nico',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Correo Argentino',
-				EmpresaId: '1',
+				ID: '3',
+				Descripcion: 'Moto Guille',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'PUDO',
-				EmpresaId: '1',
+				ID: '4',
+				Descripcion: 'OCA',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'MD',
-				EmpresaId: '1',
+				ID: '5',
+				Descripcion: 'Correo Argentino',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Otro',
-				EmpresaId: '1',
+				ID: '6',
+				Descripcion: 'PUDO',
+				ID_Empresa: '1',
+			},
+			{
+				ID: '7',
+				Descripcion: 'MD',
+				ID_Empresa: '1',
+			},
+			{
+				ID: '8',
+				Descripcion: 'Otro',
+				ID_Empresa: '1',
 			},
 		];
+		let tiposEnvio = oldData.map((x) => ({
+			id: x.ID,
+			descripcion: x.Descripcion,
+			EmpresaId: x.ID_Empresa,
+		}));
 		await queryInterface.bulkInsert('tipoenvio', tiposEnvio, {});
 	},
 

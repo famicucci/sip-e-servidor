@@ -3,24 +3,38 @@ const moment = require('moment');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		let ptosStocks = [
+		const oldData = [
 			{
-				descripcion: 'Showroom',
-				EmpresaId: 1,
+				ID: '1',
+				Descripcion: 'Showroom',
+				Stock_Minimo: null,
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Depósito',
-				EmpresaId: 1,
+				ID: '2',
+				Descripcion: 'Despósito',
+				Stock_Minimo: null,
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Outlet',
-				EmpresaId: 1,
+				ID: '3',
+				Descripcion: 'Mercado Libre',
+				Stock_Minimo: null,
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Mercado Libre',
-				EmpresaId: 1,
+				ID: '6',
+				Descripcion: 'Outlet',
+				Stock_Minimo: null,
+				ID_Empresa: '1',
 			},
 		];
+		let ptosStocks = oldData.map((x) => ({
+			id: x.ID,
+			descripcion: x.Descripcion,
+			stockMin: x.Stock_Minimo,
+			EmpresaId: x.ID_Empresa,
+		}));
 		await queryInterface.bulkInsert('ptostock', ptosStocks, {});
 	},
 

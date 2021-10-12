@@ -2,20 +2,28 @@
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		let metodosPago = [
+		const oldData = [
 			{
-				descripcion: 'Mercado Pago',
-				EmpresaId: '1',
+				ID: '1',
+				Descripcion: 'Mercado Pago',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Efectivo',
-				EmpresaId: '1',
+				ID: '2',
+				Descripcion: 'Efectivo',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Transferencia',
-				EmpresaId: '1',
+				ID: '3',
+				Descripcion: 'Transferencia',
+				ID_Empresa: '1',
 			},
 		];
+		let metodosPago = oldData.map((x) => ({
+			id: x.ID,
+			descripcion: x.Descripcion,
+			EmpresaId: x.ID_Empresa,
+		}));
 		await queryInterface.bulkInsert('metodopago', metodosPago, {});
 	},
 

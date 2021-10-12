@@ -3,32 +3,28 @@ const moment = require('moment');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		let precioListas = [
+		const oldData = [
 			{
-				descripcion: 'Lista Minorista',
-				estado: 'Vigente',
-				EmpresaId: '1',
-				createdAt: moment().format(),
+				ID: '1',
+				Descripcion: 'Lista Minorista',
+				Fecha: '2021-02-15 17:00:00',
+				Estado: 'Vigente',
+				ID_Empresa: '1',
 			},
 			{
-				descripcion: 'Lista Mayorista',
-				estado: 'Vigente',
-				EmpresaId: '1',
-				createdAt: moment().format(),
-			},
-			{
-				descripcion: 'Lista Minorista',
-				estado: 'Vigente',
-				EmpresaId: '2',
-				createdAt: moment().format(),
-			},
-			{
-				descripcion: 'Lista Mayorista',
-				estado: 'No vigente',
-				EmpresaId: '2',
-				createdAt: moment().format(),
+				ID: '2',
+				Descripcion: 'Lista Mayorista',
+				Fecha: '2021-02-15 17:00:00',
+				Estado: 'Vigente',
+				ID_Empresa: '1',
 			},
 		];
+		let precioListas = oldData.map((x) => ({
+			descripcion: x.Descripcion,
+			estado: x.Estado,
+			EmpresaId: x.ID_Empresa,
+			createdAt: moment().format(),
+		}));
 		await queryInterface.bulkInsert('listaprecio', precioListas, {});
 	},
 
