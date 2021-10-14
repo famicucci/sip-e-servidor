@@ -18,6 +18,7 @@ const {
 } = require('../models/index');
 const { Op } = require('sequelize');
 const { sequelize } = require('../models/index');
+const moment = require('moment');
 
 exports.crearOrden = async (req, res) => {
 	// traer todos los stocks de productos
@@ -239,6 +240,15 @@ exports.traerOrdenes = async (req, res) => {
 
 // traer stock total y precios
 exports.traerOrdenesFinalizadas = async (req, res) => {
+	const dates = JSON.parse(req.params.Dates);
+
+	const startDate = moment(dates.startDate).subtract({
+		hours: 3,
+	});
+	const endDate = moment(dates.endDate).add({
+		hours: 21,
+	});
+
 	try {
 		const ordenes = await Orden.findAll({
 			attributes: {
@@ -308,7 +318,12 @@ exports.traerOrdenesFinalizadas = async (req, res) => {
 					attributes: ['id', 'descripcion'],
 				},
 			],
-			where: { OrdenEstadoId: { [Op.or]: [11, 15] } },
+			where: {
+				OrdenEstadoId: { [Op.or]: [11, 15] },
+				createdAt: {
+					[Op.between]: [startDate, endDate],
+				},
+			},
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {

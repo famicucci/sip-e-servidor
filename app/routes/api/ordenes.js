@@ -3,7 +3,7 @@ const router = express.Router();
 const OrdenController = require('../../controllers/OrdenController');
 
 router.get('/', OrdenController.traerOrdenes);
-router.get('/finalizadas', OrdenController.traerOrdenesFinalizadas);
+router.get('/finalizadas/:Dates', OrdenController.traerOrdenesFinalizadas);
 router.get('/:Id', OrdenController.traerOrden);
 router.get('/cliente/:IdCliente', OrdenController.traerOrdenesCliente);
 router.post('/', OrdenController.crearOrden);
