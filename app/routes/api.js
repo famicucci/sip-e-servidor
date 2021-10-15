@@ -19,6 +19,7 @@ const apiFacturasRouter = require('./api/facturas');
 const apiOrdenesRouter = require('./api/ordenes');
 const apiDetallesOrdenRouter = require('./api/detallesorden');
 const apiInformesRouter = require('./api/informes');
+const apiTiendaNube = require('./api/tiendanube');
 
 router.get('/', (req, res) => {
 	res.json('Bienvenido a la API de Sip-e');
@@ -40,5 +41,6 @@ router.use('/facturas', middlewares.checkToken, apiFacturasRouter);
 router.use('/ordenes', middlewares.checkToken, apiOrdenesRouter);
 router.use('/detalles-orden', middlewares.checkToken, apiDetallesOrdenRouter);
 router.use('/informes', middlewares.checkToken, apiInformesRouter);
+router.use('/tiendanube', middlewares.checkToken, apiTiendaNube);
 
 module.exports = router;
