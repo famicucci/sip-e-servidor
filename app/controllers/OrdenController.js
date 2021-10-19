@@ -72,11 +72,8 @@ exports.crearOrden = async (req, res) => {
 	}
 
 	if (prodsSinStock.length > 0) {
-		// borrarlo del detalle de la orden
-		for (let j = 0; j < prodsSinStock.length; j++) {
-			const element = prodsSinStock[j];
-			detalleOrden = detalleOrden.filter((x) => x.ProductoCodigo !== element);
-		}
+		res.status(400).send({ productWithoutStock: prodsSinStock });
+		return;
 	}
 
 	// rollback
