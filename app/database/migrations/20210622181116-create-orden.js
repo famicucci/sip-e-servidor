@@ -20,6 +20,7 @@ module.exports = {
 			},
 			ordenEcommerce: {
 				type: Sequelize.STRING(30),
+				unique: true,
 			},
 			createdAt: {
 				type: Sequelize.DATE,
