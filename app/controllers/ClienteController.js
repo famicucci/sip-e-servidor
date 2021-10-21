@@ -91,6 +91,41 @@ exports.traerClientes = async (req, res) => {
 	}
 };
 
+exports.traerCliente = async (req, res) => {
+	console.log(req.params.Email);
+	try {
+		const clientes = await Cliente.findAll({
+			attributes: [
+				'id',
+				'nombre',
+				'apellido',
+				'observaciones',
+				'instagram',
+				'facebook',
+				'celular',
+				'email',
+				'mascota',
+				'tipo',
+				'dni',
+				'razonSocial',
+				'condIva',
+				'createdAt',
+				'updatedAt',
+			],
+			include: {
+				model: Direccion,
+				as: 'direcciones',
+				attributes: { exclude: ['ClienteId'] },
+			},
+			where: { email: req.params.Email },
+		});
+
+		res.json(clientes);
+	} catch (error) {
+		res.json(error);
+	}
+};
+
 exports.eliminarCliente = async (req, res) => {
 	try {
 		const cliente = await Cliente.destroy({
