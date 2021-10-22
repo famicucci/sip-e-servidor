@@ -5,6 +5,6 @@ const TiendaNubeController = require('../../controllers/TiendaNubeController');
 router.get('/productos', TiendaNubeController.traerProductos);
 router.put('/stock/:ProductId/:VariantId', TiendaNubeController.modificarStock);
 router.get('/ordenes/', TiendaNubeController.traerOrdenes);
-router.post('/ordenes/:Id/close', TiendaNubeController.cancelOrder);
+router.post('/ordenes/:Id/close', TiendaNubeController.closeOrder);
 
 module.exports = router;

@@ -46,7 +46,7 @@ exports.traerOrdenes = async (req, res) => {
 	}
 };
 
-exports.cancelOrder = async (req, res) => {
+exports.closeOrder = async (req, res) => {
 	try {
 		const r = await tiendaNubeAxios.post(
 			`/v1/1894966/orders/${req.params.Id}/close`
