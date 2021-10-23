@@ -27,6 +27,10 @@ module.exports = {
 				descripcion: 'Otro',
 				EmpresaId: '1',
 			},
+			{
+				descripcion: 'A Definir',
+				EmpresaId: '1',
+			},
 		];
 		await queryInterface.bulkInsert('tipoenvio', tiposEnvio, {});
 	},

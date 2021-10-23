@@ -43,6 +43,11 @@ module.exports = {
 				Descripcion: 'Otro',
 				ID_Empresa: '1',
 			},
+			{
+				ID: '9',
+				Descripcion: 'A Definir',
+				ID_Empresa: '1',
+			},
 		];
 		let tiposEnvio = oldData.map((x) => ({
 			id: x.ID,
