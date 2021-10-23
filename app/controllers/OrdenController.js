@@ -156,6 +156,33 @@ exports.crearOrden = async (req, res) => {
 	}
 };
 
+// create an order without remove stocks
+exports.createOrderSimple = async (req, res) => {
+	try {
+		const orden = await Orden.create(
+			{
+				observaciones: req.body.observaciones,
+				direccionEnvio: req.body.direccionEnvio,
+				tarifaEnvio: req.body.tarifaEnvio,
+				ordenEcommerce: req.body.ordenEcommerce,
+				ClienteId: req.body.ClienteId,
+				PtoVentaId: req.body.PtoVentaId,
+				UsuarioId: req.usuarioId,
+				OrdenEstadoId: req.body.OrdenEstadoId,
+				TipoEnvioId: req.body.TipoEnvioId,
+				detalleOrden: req.body.detalleOrden,
+			},
+			{
+				include: 'detalleOrden',
+			}
+		);
+		res.status(200).send(orden);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send(error);
+	}
+};
+
 // traer stock total y precios
 exports.traerOrdenes = async (req, res) => {
 	try {

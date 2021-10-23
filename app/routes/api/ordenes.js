@@ -7,6 +7,7 @@ router.get('/finalizadas/:Dates', OrdenController.traerOrdenesFinalizadas);
 router.get('/:Id', OrdenController.traerOrden);
 router.get('/cliente/:IdCliente', OrdenController.traerOrdenesCliente);
 router.post('/', OrdenController.crearOrden);
+router.post('/simple', OrdenController.createOrderSimple);
 router.put('/:Id', OrdenController.modificarOrden);
 router.delete('/:Id', OrdenController.eliminarOrden);
 
