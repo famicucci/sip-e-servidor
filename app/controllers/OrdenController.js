@@ -254,7 +254,7 @@ exports.traerOrdenes = async (req, res) => {
 					attributes: ['id', 'descripcion'],
 				},
 			],
-			where: { OrdenEstadoId: { [Op.not]: [11, 15] } },
+			where: { OrdenEstadoId: { [Op.not]: 11 } },
 		});
 		res.status(200).json(ordenes);
 	} catch (error) {
@@ -343,7 +343,7 @@ exports.traerOrdenesFinalizadas = async (req, res) => {
 				},
 			],
 			where: {
-				OrdenEstadoId: { [Op.or]: [11, 15] },
+				OrdenEstadoId: 11,
 				createdAt: {
 					[Op.between]: [startDate, endDate],
 				},
