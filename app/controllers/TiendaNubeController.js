@@ -46,6 +46,15 @@ exports.traerOrdenes = async (req, res) => {
 	}
 };
 
+exports.traerOrden = async (req, res) => {
+	try {
+		const r = await tiendaNubeAxios.get(`/v1/1894966/orders/${req.params.Id}`);
+		res.status(200).json(r.data);
+	} catch (error) {
+		res.status(400).json(error);
+	}
+};
+
 exports.closeOrder = async (req, res) => {
 	try {
 		const r = await tiendaNubeAxios.post(
