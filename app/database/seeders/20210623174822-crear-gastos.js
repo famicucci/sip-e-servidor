@@ -13,6 +13,7 @@ module.exports = {
 				UsuarioId: 1,
 				GastoCategoriaId: 4,
 				GastoSubcategoriaId: 6,
+				EmpresaId: '1',
 			},
 			{
 				descripcion: 'Telas',
@@ -23,6 +24,7 @@ module.exports = {
 				UsuarioId: 2,
 				GastoCategoriaId: 3,
 				GastoSubcategoriaId: 4,
+				EmpresaId: '1',
 			},
 			{
 				descripcion: 'Hojas de papel',
@@ -33,6 +35,7 @@ module.exports = {
 				UsuarioId: 4,
 				GastoCategoriaId: 3,
 				GastoSubcategoriaId: 8,
+				EmpresaId: '1',
 			},
 			{
 				descripcion: 'Sueldo de Yazmín',
@@ -43,6 +46,7 @@ module.exports = {
 				UsuarioId: 3,
 				GastoCategoriaId: 1,
 				GastoSubcategoriaId: 1,
+				EmpresaId: '1',
 			},
 		];
 		await queryInterface.bulkInsert('gasto', gastos, {});
