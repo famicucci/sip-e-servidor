@@ -14,6 +14,14 @@ module.exports = {
 				createdAt: moment().format(),
 			},
 			{
+				nombre: 'admin',
+				password: bcryptjs.hashSync('admin', 10),
+				usuario: 'admin',
+				rol: 1,
+				EmpresaId: 1,
+				createdAt: moment().format(),
+			},
+			{
 				nombre: 'Camila Di Giacomo',
 				password: bcryptjs.hashSync('123456', 10),
 				usuario: 'cdigiacomo',
