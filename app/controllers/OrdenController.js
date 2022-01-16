@@ -105,7 +105,7 @@ exports.crearOrden = async (req, res) => {
 				ClienteId: req.body.ClienteId,
 				PtoVentaId: req.body.PtoVentaId,
 				UsuarioId: req.usuarioId,
-				OrdenEstadoId: req.body.OrdenEstadoId,
+				OrdenEstadoId: !req.body.OrdenEstadoId ? null : req.body.OrdenEstadoId,
 				TipoEnvioId: req.body.TipoEnvioId,
 				detalleOrden: detalleOrden,
 			},
