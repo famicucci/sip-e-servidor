@@ -101,11 +101,13 @@ exports.crearOrden = async (req, res) => {
 				observaciones: req.body.observaciones,
 				direccionEnvio: req.body.direccionEnvio,
 				tarifaEnvio: req.body.tarifaEnvio,
-				ordenEcommerce: req.body.ordenEcommerce,
+				ordenEcommerce: !req.body.ordenEcommerce
+					? null
+					: req.body.ordenEcommerce,
 				ClienteId: req.body.ClienteId,
 				PtoVentaId: req.body.PtoVentaId,
 				UsuarioId: req.usuarioId,
-				OrdenEstadoId: !req.body.OrdenEstadoId ? null : req.body.OrdenEstadoId,
+				OrdenEstadoId: req.body.OrdenEstadoId,
 				TipoEnvioId: req.body.TipoEnvioId,
 				detalleOrden: detalleOrden,
 			},
