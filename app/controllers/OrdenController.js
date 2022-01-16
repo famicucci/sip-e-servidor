@@ -153,7 +153,6 @@ exports.crearOrden = async (req, res) => {
 			res.json(orden);
 		}
 	} catch (error) {
-		console.log(error);
 		await t.rollback();
 		res.status(400).send({ error: 'Hubo un error' });
 	}
@@ -181,7 +180,6 @@ exports.createOrderSimple = async (req, res) => {
 		);
 		res.status(200).send(orden);
 	} catch (error) {
-		console.log(error);
 		res.status(400).send(error);
 	}
 };
