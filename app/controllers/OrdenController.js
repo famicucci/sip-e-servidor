@@ -151,6 +151,7 @@ exports.crearOrden = async (req, res) => {
 			res.json(orden);
 		}
 	} catch (error) {
+		console.log(error);
 		await t.rollback();
 		res.status(400).send({ error: 'Hubo un error' });
 	}
